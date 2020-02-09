@@ -70,11 +70,40 @@
                     <navigationItem key="navigationItem" id="04m-Tv-hdh"/>
                     <connections>
                         <outlet property="dealershipTableView" destination="V2M-FI-uWO" id="HyM-gF-CsM"/>
+                        <segue destination="z9P-4C-RnI" kind="show" id="4w9-3R-Ago"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ctl-M8-jgt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1952" y="119"/>
+            <point key="canvasLocation" x="1970" y="117"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="lJy-Fg-XIH">
+            <objects>
+                <viewController id="z9P-4C-RnI" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Zef-CW-C9k">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="bcM-HE-h8j">
+                                <rect key="frame" x="0.0" y="88" width="414" height="774"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="bcM-HE-h8j" firstAttribute="leading" secondItem="gj9-7o-fP9" secondAttribute="leading" id="1OV-a1-ABq"/>
+                            <constraint firstItem="bcM-HE-h8j" firstAttribute="top" secondItem="gj9-7o-fP9" secondAttribute="top" id="2jh-Z4-j1l"/>
+                            <constraint firstItem="gj9-7o-fP9" firstAttribute="trailing" secondItem="bcM-HE-h8j" secondAttribute="trailing" id="F35-uQ-yv9"/>
+                            <constraint firstItem="gj9-7o-fP9" firstAttribute="bottom" secondItem="bcM-HE-h8j" secondAttribute="bottom" id="fzi-Ib-7Ff"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="gj9-7o-fP9"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="qQP-lP-qTR"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jDa-BL-JrO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2790" y="117"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ddQ-Ma-T9b">

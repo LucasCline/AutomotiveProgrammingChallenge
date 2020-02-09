@@ -6,11 +6,14 @@
 //  Copyright © 2020 Lucas Cline. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
 let datasetIdURL = "http://api.coxauto-interview.com/api/datasetId"
 let vehicleListURL = "http://api.coxauto-interview.com/api/"
 let vehicleInfoURL = "http://api.coxauto-interview.com/api/"
 let dealershipInfoURL = "http://api.coxauto-interview.com/api/adfdasfasf/dealers/123213123"
+
+
 
 
 struct NetworkingManager {

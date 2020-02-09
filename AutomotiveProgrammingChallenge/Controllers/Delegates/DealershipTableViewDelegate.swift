@@ -7,16 +7,116 @@
 //
 
 import UIKit
+import CoreData
 
 class DealershipTableViewDelegate: NSObject {
     weak var viewController: DealershipTableViewController?
-    var vehicleInfoList: [VehicleInfo] = []
     var dealerIds: Set<Int> = []
-    var dealershipInfoList: [DealershipInfo] = []
+    var vehicles: [NSManagedObject] = []
+    var dealerships: [NSManagedObject] = []
+    
     init(viewController: DealershipTableViewController) {
         super.init()
         self.viewController = viewController
-        loadDealershipData()
+        
+        fetchDealershipData()
+        //deleteCoreData()
+    }
+    
+    //debugging only - only deletes dealership data
+    private func deleteCoreData() {
+        DispatchQueue.main.async {
+            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+                return
+            }
+            
+            let managedContext = appDelegate.persistentContainer.viewContext
+            
+            //2
+            let fetchRequest = NSBatchDeleteRequest(fetchRequest: NSFetchRequest<NSManagedObject>(entityName: "Dealership") as! NSFetchRequest<NSFetchRequestResult>)
+            
+            //3
+            do {
+                try managedContext.execute(fetchRequest)
+                self.viewController?.dealershipTableView.reloadData()
+                //self.dealerships = try managedContext.fetch(fetchRequest)
+                //self.viewController?.dealershipTableView.reloadData()
+            } catch let error as NSError {
+                print("Could not fetch. \(error), \(error.userInfo)")
+            }
+        }
+    }
+    
+    private func fetchDealershipData() {
+        DispatchQueue.main.async {
+            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+                return
+            }
+            
+            let managedContext = appDelegate.persistentContainer.viewContext
+            let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Dealership")
+            
+            do {
+                self.dealerships = try managedContext.fetch(fetchRequest)
+            } catch let error as NSError {
+                print("Could not fetch. \(error), \(error.userInfo)")
+            }
+            
+            if self.dealerships.count > 0 {
+                self.viewController?.dealershipTableView.reloadData()
+            } else {
+                self.loadDealershipData()
+            }
+        }
+    }
+    
+    private func saveVehicleInfo(_ vehicleInfo: VehicleInfo) {
+        DispatchQueue.main.async {
+            guard let appDelegate =
+                UIApplication.shared.delegate as? AppDelegate else {
+                return
+            }
+            
+            let managedContext = appDelegate.persistentContainer.viewContext
+            let entity = NSEntityDescription.entity(forEntityName: "Vehicle", in: managedContext)!
+            let vehicle = NSManagedObject(entity: entity, insertInto: managedContext)
+            
+            vehicle.setValue(vehicleInfo.dealerId, forKeyPath: "dealerId")
+            vehicle.setValue(vehicleInfo.make, forKey: "make")
+            vehicle.setValue(vehicleInfo.model, forKey: "model")
+            vehicle.setValue(vehicleInfo.vehicleId, forKey: "vehicleId")
+            vehicle.setValue(vehicleInfo.year, forKey: "year")
+            
+            do {
+                try managedContext.save()
+                self.vehicles.append(vehicle)
+            } catch let error as NSError {
+                print("Could not save core data object vehicle with errors - \(error), \(error.userInfo)")
+            }
+        }
+    }
+    
+    private func saveDealershipInfo(_ dealershipInfo: DealershipInfo) {
+        DispatchQueue.main.async {
+            guard let appDelegate =
+                UIApplication.shared.delegate as? AppDelegate else {
+                return
+            }
+
+            let managedContext = appDelegate.persistentContainer.viewContext
+            let entity = NSEntityDescription.entity(forEntityName: "Dealership", in: managedContext)!
+            let dealership = NSManagedObject(entity: entity, insertInto: managedContext)
+            
+            dealership.setValue(dealershipInfo.id, forKey: "id")
+            dealership.setValue(dealershipInfo.name, forKey: "name")
+            
+            do {
+                try managedContext.save()
+                self.dealerships.append(dealership)
+            } catch let error as NSError {
+                print("Could not save core data object dealership with errors - \(error), \(error.userInfo)")
+            }
+        }
     }
     
     private func loadDealershipData() {
@@ -33,7 +133,7 @@ class DealershipTableViewDelegate: NSObject {
                     networkingManager.getVehicleInfo(datasetId: datasetId, vehicleId: vehicleId) { (datasetId, vehicleInfo) in
                         vehicleDispatchGroup.leave()
                         //persist vehicle info
-                        self.vehicleInfoList.append(vehicleInfo)
+                        self.saveVehicleInfo(vehicleInfo)
                         self.dealerIds.insert(vehicleInfo.dealerId)
                     }
                 }
@@ -45,13 +145,13 @@ class DealershipTableViewDelegate: NSObject {
                         dealershipDispatchGroup.enter()
                         networkingManager.getDealershipInfo(datasetId: datasetId, dealerId: dealerId) { (datasetId, dealershipInfo) in
                             dealershipDispatchGroup.leave()
-                            self.dealershipInfoList.append(dealershipInfo)
+                            self.saveDealershipInfo(dealershipInfo)
+                            print(dealershipInfo)
                         }
                     }
                     
                     dealershipDispatchGroup.notify(queue: .main) {
-                        print("finished the dealership requests")
-                        self.viewController?.dealershipTableView.reloadData()
+                        self.fetchDealershipData()
                     }
                 }
             }
@@ -67,12 +167,13 @@ extension DealershipTableViewDelegate: UITableViewDelegate {
 
 extension DealershipTableViewDelegate: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.dealershipInfoList.count
+        return self.dealerships.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        cell.textLabel?.text = "\(self.dealershipInfoList[indexPath.row].name)"
+        let dealership = dealerships[indexPath.row]
+        cell.textLabel?.text = dealership.value(forKeyPath: "name") as? String
         return cell
     }
 }
