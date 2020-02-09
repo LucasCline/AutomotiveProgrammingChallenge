@@ -70,17 +70,17 @@
                     <navigationItem key="navigationItem" id="04m-Tv-hdh"/>
                     <connections>
                         <outlet property="dealershipTableView" destination="V2M-FI-uWO" id="HyM-gF-CsM"/>
-                        <segue destination="z9P-4C-RnI" kind="show" id="4w9-3R-Ago"/>
+                        <segue destination="z9P-4C-RnI" kind="show" identifier="VehicleSegue" id="4w9-3R-Ago"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ctl-M8-jgt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1970" y="117"/>
+            <point key="canvasLocation" x="1919" y="117"/>
         </scene>
-        <!--View Controller-->
+        <!--Vehicle Table View Controller-->
         <scene sceneID="lJy-Fg-XIH">
             <objects>
-                <viewController id="z9P-4C-RnI" sceneMemberID="viewController">
+                <viewController id="z9P-4C-RnI" customClass="VehicleTableViewController" customModule="AutomotiveProgrammingChallenge" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Zef-CW-C9k">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -100,6 +100,9 @@
                         <viewLayoutGuide key="safeArea" id="gj9-7o-fP9"/>
                     </view>
                     <navigationItem key="navigationItem" id="qQP-lP-qTR"/>
+                    <connections>
+                        <outlet property="vehicleTableView" destination="bcM-HE-h8j" id="Oks-6F-HiU"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jDa-BL-JrO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

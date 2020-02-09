@@ -161,7 +161,9 @@ class DealershipTableViewDelegate: NSObject {
 
 extension DealershipTableViewDelegate: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        let dealerId = dealerships[indexPath.row].value(forKey: "id") as? Int
+        viewController?.dealerIdForSegue = dealerId
+        viewController?.performSegue(withIdentifier: "VehicleSegue", sender: viewController)
     }
 }
 
