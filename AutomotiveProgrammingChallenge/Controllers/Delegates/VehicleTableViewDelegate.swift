@@ -47,10 +47,21 @@ extension VehicleTableViewDelegate: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "VehicleCell", for: indexPath) as? VehicleTableViewCell else {
+            print("Unable to cast the table view cell to a VehicleCell -- returning a blank UITableViewCell")
+            return UITableViewCell()
+        }
+
         let vehicle = vehicles[indexPath.row]
-        //LUCAS - fix this optional
-        cell.textLabel?.text = "\(String(describing: vehicle.value(forKeyPath: "vehicleId") as? Int))"
+        //LUCAS - fix these force unwraps
+        let year = "\(String(describing: vehicle.value(forKeyPath: "year") as! Int))"
+        let make = vehicle.value(forKeyPath: "make") as! String
+        let model = vehicle.value(forKeyPath: "model") as! String
+        
+        cell.yearMakeModel.text = "\(year) \(make) \(model)"
+        cell.vehicleId.text = "Vehicle ID: \(String(describing: vehicle.value(forKeyPath: "vehicleId") as! Int))"
+        cell.dealershipId.text = "Dealership ID: \(String(describing: vehicle.value(forKeyPath: "dealerId") as! Int))"
+        
         return cell
     }
 }

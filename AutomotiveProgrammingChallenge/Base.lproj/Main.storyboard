@@ -56,6 +56,43 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="V2M-FI-uWO">
                                 <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DealershipCell" rowHeight="140" id="avi-yI-MgE" customClass="DealershipTableViewCell" customModule="AutomotiveProgrammingChallenge" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="140"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="avi-yI-MgE" id="O9U-Ti-ITv">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="140"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dealership Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qBN-i2-Ed8" userLabel="Dealership Name">
+                                                    <rect key="frame" x="0.0" y="10" width="404" height="43"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="36"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dealership Id" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LbD-n0-n3X" userLabel="Dealership Id">
+                                                    <rect key="frame" x="10" y="111" width="394" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="qBN-i2-Ed8" secondAttribute="trailing" constant="10" id="26b-iL-YC4"/>
+                                                <constraint firstItem="qBN-i2-Ed8" firstAttribute="top" secondItem="O9U-Ti-ITv" secondAttribute="top" constant="10" id="3bj-LG-nJB"/>
+                                                <constraint firstAttribute="bottom" secondItem="LbD-n0-n3X" secondAttribute="bottom" constant="8" id="5sv-cj-OgV"/>
+                                                <constraint firstItem="LbD-n0-n3X" firstAttribute="leading" secondItem="O9U-Ti-ITv" secondAttribute="leading" constant="10" id="D0D-Eh-4Vb"/>
+                                                <constraint firstItem="qBN-i2-Ed8" firstAttribute="leading" secondItem="O9U-Ti-ITv" secondAttribute="leading" id="bMd-ef-EdU"/>
+                                                <constraint firstAttribute="trailing" secondItem="LbD-n0-n3X" secondAttribute="trailing" constant="10" id="mb6-Rp-1IG"/>
+                                                <constraint firstItem="LbD-n0-n3X" firstAttribute="top" relation="greaterThanOrEqual" secondItem="qBN-i2-Ed8" secondAttribute="bottom" constant="10" id="p0U-SX-tLn"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="dealershipId" destination="LbD-n0-n3X" id="QCH-7k-EtL"/>
+                                            <outlet property="dealershipName" destination="qBN-i2-Ed8" id="MAK-wB-uBH"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -75,7 +112,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ctl-M8-jgt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1919" y="117"/>
+            <point key="canvasLocation" x="1918.840579710145" y="116.51785714285714"/>
         </scene>
         <!--Vehicle Table View Controller-->
         <scene sceneID="lJy-Fg-XIH">
@@ -88,6 +125,53 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="bcM-HE-h8j">
                                 <rect key="frame" x="0.0" y="88" width="414" height="774"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="VehicleCell" rowHeight="268" id="hjV-aA-9k4" customClass="VehicleTableViewCell" customModule="AutomotiveProgrammingChallenge" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="268"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="hjV-aA-9k4" id="lLk-HU-H6V">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="268"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Year Make Model" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SAK-MI-KJ7" userLabel="Vehicle Year/Make/Model">
+                                                    <rect key="frame" x="0.0" y="10" width="404" height="43"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="36"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Vehicle Id" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lpe-eb-65J" userLabel="Vehicle Id">
+                                                    <rect key="frame" x="10" y="217.5" width="394" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dealership Id" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Glu-SX-Sr8" userLabel="Dealership Id">
+                                                    <rect key="frame" x="10" y="237.5" width="394" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="SAK-MI-KJ7" secondAttribute="trailing" constant="10" id="6LY-Sh-TXW"/>
+                                                <constraint firstItem="Lpe-eb-65J" firstAttribute="leading" secondItem="lLk-HU-H6V" secondAttribute="leading" constant="10" id="Efy-LZ-KTu"/>
+                                                <constraint firstAttribute="trailing" secondItem="Lpe-eb-65J" secondAttribute="trailing" constant="10" id="TYY-iy-v5Q"/>
+                                                <constraint firstAttribute="bottom" secondItem="Glu-SX-Sr8" secondAttribute="bottom" constant="10" id="cgG-Go-mNz"/>
+                                                <constraint firstItem="Glu-SX-Sr8" firstAttribute="trailing" secondItem="Lpe-eb-65J" secondAttribute="trailing" id="e7R-hP-Y5z"/>
+                                                <constraint firstItem="Glu-SX-Sr8" firstAttribute="leading" secondItem="Lpe-eb-65J" secondAttribute="leading" id="ewf-kf-AXh"/>
+                                                <constraint firstItem="SAK-MI-KJ7" firstAttribute="leading" secondItem="lLk-HU-H6V" secondAttribute="leading" id="geO-C8-SBd"/>
+                                                <constraint firstItem="SAK-MI-KJ7" firstAttribute="top" secondItem="lLk-HU-H6V" secondAttribute="top" constant="10" id="nIX-1m-l7i"/>
+                                                <constraint firstItem="Lpe-eb-65J" firstAttribute="top" relation="greaterThanOrEqual" secondItem="SAK-MI-KJ7" secondAttribute="bottom" constant="10" id="q75-jr-Hne"/>
+                                                <constraint firstItem="Glu-SX-Sr8" firstAttribute="top" secondItem="Lpe-eb-65J" secondAttribute="bottom" constant="-1" id="z3y-jD-6C4"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="dealershipId" destination="Glu-SX-Sr8" id="DPG-je-3PK"/>
+                                            <outlet property="vehicleId" destination="Lpe-eb-65J" id="shU-Ft-Rjs"/>
+                                            <outlet property="yearMakeModel" destination="SAK-MI-KJ7" id="gIg-Pm-Pv2"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -106,7 +190,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jDa-BL-JrO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2790" y="117"/>
+            <point key="canvasLocation" x="2789.8550724637685" y="116.51785714285714"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="ddQ-Ma-T9b">

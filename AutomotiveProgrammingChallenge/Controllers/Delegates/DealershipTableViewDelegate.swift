@@ -173,9 +173,15 @@ extension DealershipTableViewDelegate: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "DealershipCell", for: indexPath) as? DealershipTableViewCell else {
+            print("Unable to cast the table view cell to a DealershipCell -- returning a blank UITableViewCell")
+            return UITableViewCell()
+        }
+        
         let dealership = dealerships[indexPath.row]
-        cell.textLabel?.text = dealership.value(forKeyPath: "name") as? String
+
+        cell.dealershipName.text = (dealership.value(forKeyPath: "name") as! String)
+        cell.dealershipId.text = "ID: \(String(describing: dealership.value(forKeyPath: "id") as! Int))"
         return cell
     }
 }
