@@ -18,6 +18,11 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        DispatchQueue.global().asyncAfter(deadline: .now() + 10) {
+            print(self.vehicleInfoList)
+            print(self.dealershipInfoList)
+        }
+        
         let networkingManager = NetworkingManager()
         //get a datasetId
         networkingManager.getDatasetId { (datasetId) in

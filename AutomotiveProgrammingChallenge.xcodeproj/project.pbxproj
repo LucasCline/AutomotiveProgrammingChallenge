@@ -19,6 +19,9 @@
 		378E98B923EF32E000FD7BD2 /* NetworkingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378E98B823EF32E000FD7BD2 /* NetworkingManager.swift */; };
 		378E98BE23EF353700FD7BD2 /* URLResponse+AutomotiveProgrammingChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378E98BD23EF353700FD7BD2 /* URLResponse+AutomotiveProgrammingChallenge.swift */; };
 		378E98C023EF387C00FD7BD2 /* VehicleInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378E98BF23EF387C00FD7BD2 /* VehicleInfo.swift */; };
+		378E98C323EF5C9200FD7BD2 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378E98C223EF5C9200FD7BD2 /* WelcomeViewController.swift */; };
+		378E98C523EFA05F00FD7BD2 /* DealershipTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378E98C423EFA05F00FD7BD2 /* DealershipTableViewController.swift */; };
+		378E98C823EFA0A000FD7BD2 /* DealershipTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378E98C723EFA0A000FD7BD2 /* DealershipTableViewDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +60,9 @@
 		378E98B823EF32E000FD7BD2 /* NetworkingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingManager.swift; sourceTree = "<group>"; };
 		378E98BD23EF353700FD7BD2 /* URLResponse+AutomotiveProgrammingChallenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLResponse+AutomotiveProgrammingChallenge.swift"; sourceTree = "<group>"; };
 		378E98BF23EF387C00FD7BD2 /* VehicleInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VehicleInfo.swift; sourceTree = "<group>"; };
+		378E98C223EF5C9200FD7BD2 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
+		378E98C423EFA05F00FD7BD2 /* DealershipTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealershipTableViewController.swift; sourceTree = "<group>"; };
+		378E98C723EFA0A000FD7BD2 /* DealershipTableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealershipTableViewDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +113,7 @@
 		378E988423EF325100FD7BD2 /* AutomotiveProgrammingChallenge */ = {
 			isa = PBXGroup;
 			children = (
+				378E98C123EF5C6E00FD7BD2 /* Controllers */,
 				378E98BB23EF351900FD7BD2 /* Models */,
 				378E98BA23EF350800FD7BD2 /* Networking */,
 				378E988523EF325100FD7BD2 /* AppDelegate.swift */,
@@ -162,6 +169,24 @@
 				378E98BD23EF353700FD7BD2 /* URLResponse+AutomotiveProgrammingChallenge.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		378E98C123EF5C6E00FD7BD2 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				378E98C623EFA08E00FD7BD2 /* Delegates */,
+				378E98C223EF5C9200FD7BD2 /* WelcomeViewController.swift */,
+				378E98C423EFA05F00FD7BD2 /* DealershipTableViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		378E98C623EFA08E00FD7BD2 /* Delegates */ = {
+			isa = PBXGroup;
+			children = (
+				378E98C723EFA0A000FD7BD2 /* DealershipTableViewDelegate.swift */,
+			);
+			path = Delegates;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -296,8 +321,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				378E988A23EF325100FD7BD2 /* ViewController.swift in Sources */,
+				378E98C323EF5C9200FD7BD2 /* WelcomeViewController.swift in Sources */,
 				378E988623EF325100FD7BD2 /* AppDelegate.swift in Sources */,
 				378E989023EF325100FD7BD2 /* AutomotiveProgrammingChallenge.xcdatamodeld in Sources */,
+				378E98C523EFA05F00FD7BD2 /* DealershipTableViewController.swift in Sources */,
+				378E98C823EFA0A000FD7BD2 /* DealershipTableViewDelegate.swift in Sources */,
 				378E98C023EF387C00FD7BD2 /* VehicleInfo.swift in Sources */,
 				378E98BE23EF353700FD7BD2 /* URLResponse+AutomotiveProgrammingChallenge.swift in Sources */,
 				378E98B923EF32E000FD7BD2 /* NetworkingManager.swift in Sources */,
