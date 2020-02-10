@@ -28,7 +28,7 @@ class CoreDataManager {
     
     func saveDealershipInfo(_ dealershipInfo: DealershipInfo, completionHandler: @escaping() -> ()) {
         guard let managedContext = persistentContainer?.viewContext else { fatalError() }
-        let entity = NSEntityDescription.entity(forEntityName: "Dealership", in: managedContext)!
+        guard let entity = NSEntityDescription.entity(forEntityName: "Dealership", in: managedContext) else { fatalError() }
         let dealership = NSManagedObject(entity: entity, insertInto: managedContext)
         
         dealership.setValue(dealershipInfo.id, forKeyPath: "id")
@@ -45,7 +45,7 @@ class CoreDataManager {
     
     func saveVehicleInfo(_ vehicleInfo: VehicleInfo) {
         guard let managedContext = persistentContainer?.viewContext else { fatalError() }
-        let entity = NSEntityDescription.entity(forEntityName: "Vehicle", in: managedContext)!
+        guard let entity = NSEntityDescription.entity(forEntityName: "Vehicle", in: managedContext) else { fatalError() }
         let vehicle = NSManagedObject(entity: entity, insertInto: managedContext)
         
         vehicle.setValue(vehicleInfo.dealerId, forKeyPath: "dealerId")
