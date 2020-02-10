@@ -100,9 +100,15 @@ extension DealershipTableViewDelegate: UITableViewDataSource {
         }
         
         let dealership = dealerships[indexPath.row]
+        
+        guard let name = dealership.value(forKeyPath: "name") as? String,
+            let id = dealership.value(forKeyPath: "id") as? Int else {
+                print("Unable to retrieve dealership values for cell - returning a blank UITableViewCell")
+                return UITableViewCell()
+        }
 
-        cell.dealershipName.text = (dealership.value(forKeyPath: "name") as! String)
-        cell.dealershipId.text = "ID: \(String(describing: dealership.value(forKeyPath: "id") as! Int))"
+        cell.dealershipName.text = name
+        cell.dealershipId.text = "ID: \(id))"
         return cell
     }
 }

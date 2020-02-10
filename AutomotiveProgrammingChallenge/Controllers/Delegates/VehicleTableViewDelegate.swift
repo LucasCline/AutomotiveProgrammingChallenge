@@ -40,16 +40,21 @@ extension VehicleTableViewDelegate: UITableViewDataSource {
             print("Unable to cast the table view cell to a VehicleCell -- returning a blank UITableViewCell")
             return UITableViewCell()
         }
-
+        
         let vehicle = vehicles[indexPath.row]
-        //LUCAS - fix these force unwraps
-        let year = "\(String(describing: vehicle.value(forKeyPath: "year") as! Int))"
-        let make = vehicle.value(forKeyPath: "make") as! String
-        let model = vehicle.value(forKeyPath: "model") as! String
+        
+        guard let year = vehicle.value(forKeyPath: "year") as? Int,
+            let make = vehicle.value(forKeyPath: "make") as? String,
+            let model = vehicle.value(forKeyPath: "model") as? String,
+            let vehicleId = vehicle.value(forKeyPath: "dealerId") as? Int,
+            let dealerId = vehicle.value(forKeyPath: "dealerId") as? Int else {
+                print("Unable to retrieve vehicle values for cell - returning a blank UITableViewCell")
+                return UITableViewCell()
+        }
         
         cell.yearMakeModel.text = "\(year) \(make) \(model)"
-        cell.vehicleId.text = "Vehicle ID: \(String(describing: vehicle.value(forKeyPath: "vehicleId") as! Int))"
-        cell.dealershipId.text = "Dealership ID: \(String(describing: vehicle.value(forKeyPath: "dealerId") as! Int))"
+        cell.vehicleId.text = "Vehicle ID: \(vehicleId)"
+        cell.dealershipId.text = "Dealership ID: \(dealerId)"
         
         return cell
     }
