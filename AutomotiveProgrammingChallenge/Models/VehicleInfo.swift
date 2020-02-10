@@ -7,8 +7,9 @@
 //
 
 import Foundation
+import CoreData
 
-struct Dataset: Codable {
+struct Dataset: Codable{
     var id: String
     enum CodingKeys: String, CodingKey {
         case id = "datasetId"

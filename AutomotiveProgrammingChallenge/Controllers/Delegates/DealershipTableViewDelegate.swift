@@ -164,6 +164,7 @@ extension DealershipTableViewDelegate: UITableViewDelegate {
         let dealerId = dealerships[indexPath.row].value(forKey: "id") as? Int
         viewController?.dealerIdForSegue = dealerId
         viewController?.performSegue(withIdentifier: "VehicleSegue", sender: viewController)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 

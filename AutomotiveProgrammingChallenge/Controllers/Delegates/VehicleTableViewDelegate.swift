@@ -18,9 +18,7 @@ class VehicleTableViewDelegate: NSObject {
         self.viewController = viewController
         fetchVehicleData()
     }
-}
-
-extension VehicleTableViewDelegate: UITableViewDelegate {
+    
     private func fetchVehicleData() {
         DispatchQueue.main.async {
             guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
@@ -38,6 +36,13 @@ extension VehicleTableViewDelegate: UITableViewDelegate {
                 print("Could not fetch vehicles with errors - \(error), \(error.userInfo)")
             }
         }
+    }
+}
+
+extension VehicleTableViewDelegate: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        //implement any future segue logic here
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
