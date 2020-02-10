@@ -17,7 +17,7 @@ class VehicleTableViewDelegate: NSObject {
         
         self.viewController = viewController
         CoreDataManager.shared.fetchEntity(entityName: "Vehicle") { (vehicles) in
-            self.vehicles = vehicles
+            self.vehicles = vehicles.filter { $0.value(forKeyPath: "dealerId") as? Int == viewController.dealerId }
             self.viewController?.vehicleTableView.reloadData()
         }
     }
