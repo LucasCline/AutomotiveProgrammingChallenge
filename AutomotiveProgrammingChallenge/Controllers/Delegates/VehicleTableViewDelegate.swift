@@ -16,25 +16,9 @@ class VehicleTableViewDelegate: NSObject {
         super.init()
         
         self.viewController = viewController
-        fetchVehicleData()
-    }
-    
-    private func fetchVehicleData() {
-        DispatchQueue.main.async {
-            guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-                return
-            }
-            
-            let managedContext = appDelegate.persistentContainer.viewContext
-            let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Vehicle")
-            
-            do {
-                //LUCAS - only fetch the ones matching the dealerId
-                self.vehicles = try managedContext.fetch(fetchRequest)
-                self.viewController?.vehicleTableView.reloadData()
-            } catch let error as NSError {
-                print("Could not fetch vehicles with errors - \(error), \(error.userInfo)")
-            }
+        CoreDataManager.shared.fetchEntity(entityName: "Vehicle") { (vehicles) in
+            self.vehicles = vehicles
+            self.viewController?.vehicleTableView.reloadData()
         }
     }
 }

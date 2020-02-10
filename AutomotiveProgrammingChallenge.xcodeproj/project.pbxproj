@@ -26,6 +26,8 @@
 		378E98CC23F0982400FD7BD2 /* VehicleTableViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378E98CB23F0982400FD7BD2 /* VehicleTableViewDelegate.swift */; };
 		37C98E3B23F0A5B000732EAE /* DealershipTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C98E3A23F0A5B000732EAE /* DealershipTableViewCell.swift */; };
 		37C98E3D23F0AB4E00732EAE /* VehicleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C98E3C23F0AB4E00732EAE /* VehicleTableViewCell.swift */; };
+		37C98E3F23F0E16100732EAE /* CodingUserInfoKey+AutomotiveProgrammingChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C98E3E23F0E16100732EAE /* CodingUserInfoKey+AutomotiveProgrammingChallenge.swift */; };
+		37C98E4123F0EAD600732EAE /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C98E4023F0EAD600732EAE /* CoreDataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +73,8 @@
 		378E98CB23F0982400FD7BD2 /* VehicleTableViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VehicleTableViewDelegate.swift; sourceTree = "<group>"; };
 		37C98E3A23F0A5B000732EAE /* DealershipTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealershipTableViewCell.swift; sourceTree = "<group>"; };
 		37C98E3C23F0AB4E00732EAE /* VehicleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VehicleTableViewCell.swift; sourceTree = "<group>"; };
+		37C98E3E23F0E16100732EAE /* CodingUserInfoKey+AutomotiveProgrammingChallenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingUserInfoKey+AutomotiveProgrammingChallenge.swift"; sourceTree = "<group>"; };
+		37C98E4023F0EAD600732EAE /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +171,7 @@
 			children = (
 				378E98BC23EF351D00FD7BD2 /* Extensions */,
 				378E98BF23EF387C00FD7BD2 /* VehicleInfo.swift */,
+				37C98E4023F0EAD600732EAE /* CoreDataManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -175,6 +180,7 @@
 			isa = PBXGroup;
 			children = (
 				378E98BD23EF353700FD7BD2 /* URLResponse+AutomotiveProgrammingChallenge.swift */,
+				37C98E3E23F0E16100732EAE /* CodingUserInfoKey+AutomotiveProgrammingChallenge.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -352,7 +358,9 @@
 				378E98CC23F0982400FD7BD2 /* VehicleTableViewDelegate.swift in Sources */,
 				378E98BE23EF353700FD7BD2 /* URLResponse+AutomotiveProgrammingChallenge.swift in Sources */,
 				378E98CA23F097BD00FD7BD2 /* VehicleTableViewController.swift in Sources */,
+				37C98E3F23F0E16100732EAE /* CodingUserInfoKey+AutomotiveProgrammingChallenge.swift in Sources */,
 				378E98B923EF32E000FD7BD2 /* NetworkingManager.swift in Sources */,
+				37C98E4123F0EAD600732EAE /* CoreDataManager.swift in Sources */,
 				378E988823EF325100FD7BD2 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
