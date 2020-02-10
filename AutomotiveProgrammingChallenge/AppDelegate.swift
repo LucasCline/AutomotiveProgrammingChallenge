@@ -17,6 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         CoreDataManager.shared.persistentContainer = persistentContainer
+        //LUCAS - Delete - this is for debugging only
         CoreDataManager.shared.deleteAllCoreData()
         return true
     }

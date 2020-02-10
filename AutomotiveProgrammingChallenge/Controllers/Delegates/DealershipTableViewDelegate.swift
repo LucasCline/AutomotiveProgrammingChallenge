@@ -21,7 +21,9 @@ class DealershipTableViewDelegate: NSObject {
         
         fetchDealershipData()
     }
-
+    
+    //fetch dealership data from core data -- if none found, make a request to the server
+    //
     private func fetchDealershipData() {
         CoreDataManager.shared.fetchEntity(entityName: "Dealership") { (dealerships) in
             if dealerships.count == 0 {
@@ -65,6 +67,9 @@ class DealershipTableViewDelegate: NSObject {
                         }
                     }
                     
+                    //once the dealership data is retrieved from the server, read from core data again.
+                    //LUCAS - will this endlessly loop if server fails?
+                    //LUCAS - maybe moving this to completion handler style format is a better idea
                     dealershipDispatchGroup.notify(queue: .main) {
                         self.fetchDealershipData()
                     }

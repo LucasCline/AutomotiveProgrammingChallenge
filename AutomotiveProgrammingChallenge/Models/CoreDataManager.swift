@@ -11,10 +11,9 @@ import CoreData
 
 class CoreDataManager {
     static let shared = CoreDataManager()
-    //LUCAS- Prevent this from being changed
+    //LUCAS - Prevent this from being changed
     var persistentContainer: NSPersistentContainer?
 
-    
     func fetchEntity(entityName: String, completionHandler: @escaping ([NSManagedObject]) -> ()) {
         guard let managedContext = persistentContainer?.viewContext else { fatalError() }
         let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: entityName)
@@ -62,6 +61,7 @@ class CoreDataManager {
         }
     }
     
+    //LUCAS - For Debug Only
     func deleteAllCoreData() {
         deleteCoreData {
             print("deleted dealerships")
@@ -79,8 +79,6 @@ class CoreDataManager {
         do {
             try managedContext.execute(fetchRequest)
             completionHandler()
-            //self.dealerships = try managedContext.fetch(fetchRequest)
-            //self.viewController?.dealershipTableView.reloadData()
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
@@ -94,53 +92,8 @@ class CoreDataManager {
         do {
             try managedContext.execute(fetchRequest)
             completionHandler()
-            //self.dealerships = try managedContext.fetch(fetchRequest)
-            //self.viewController?.dealershipTableView.reloadData()
         } catch let error as NSError {
             print("Could not fetch. \(error), \(error.userInfo)")
         }
     }
 }
-
-//private func fetchDealershipData(completionHandler: @escaping ([NSManagedObject]) -> ()) {
-//    DispatchQueue.main.async {
-//        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-//            return
-//        }
-//
-//        let managedContext = appDelegate.persistentContainer.viewContext
-//        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Dealership")
-//
-//        do {
-//            let dealerships = try managedContext.fetch(fetchRequest)
-//            completionHandler(dealerships)
-//        } catch let error as NSError {
-//            print("Could not fetch. \(error), \(error.userInfo)")
-//        }
-//
-////        if self.dealerships.count > 0 {
-////            self.viewController?.dealershipTableView.reloadData()
-////        } else {
-////            self.loadDealershipData()
-////        }
-//    }
-//}
-//
-//private func fetchVehicleData {
-//    DispatchQueue.main.async {
-//        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
-//            return
-//        }
-//
-//        let managedContext = appDelegate.persistentContainer.viewContext
-//        let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Vehicle")
-//
-//        do {
-//            //LUCAS - only fetch the ones matching the dealerId
-//            self.vehicles = try managedContext.fetch(fetchRequest)
-//            self.viewController?.vehicleTableView.reloadData()
-//        } catch let error as NSError {
-//            print("Could not fetch vehicles with errors - \(error), \(error.userInfo)")
-//        }
-//    }
-//}
