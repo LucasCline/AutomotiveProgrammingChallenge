@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		378E988623EF325100FD7BD2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378E988523EF325100FD7BD2 /* AppDelegate.swift */; };
 		378E988823EF325100FD7BD2 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378E988723EF325100FD7BD2 /* SceneDelegate.swift */; };
-		378E988A23EF325100FD7BD2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378E988923EF325100FD7BD2 /* ViewController.swift */; };
 		378E988D23EF325100FD7BD2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 378E988B23EF325100FD7BD2 /* Main.storyboard */; };
 		378E989023EF325100FD7BD2 /* AutomotiveProgrammingChallenge.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 378E988E23EF325100FD7BD2 /* AutomotiveProgrammingChallenge.xcdatamodeld */; };
 		378E989223EF326700FD7BD2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 378E989123EF326700FD7BD2 /* Assets.xcassets */; };
@@ -51,7 +50,6 @@
 		378E988223EF325100FD7BD2 /* AutomotiveProgrammingChallenge.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AutomotiveProgrammingChallenge.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		378E988523EF325100FD7BD2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		378E988723EF325100FD7BD2 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		378E988923EF325100FD7BD2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		378E988C23EF325100FD7BD2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		378E988F23EF325100FD7BD2 /* AutomotiveProgrammingChallenge.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = AutomotiveProgrammingChallenge.xcdatamodel; sourceTree = "<group>"; };
 		378E989123EF326700FD7BD2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -130,7 +128,6 @@
 				378E98BA23EF350800FD7BD2 /* Networking */,
 				378E988523EF325100FD7BD2 /* AppDelegate.swift */,
 				378E988723EF325100FD7BD2 /* SceneDelegate.swift */,
-				378E988923EF325100FD7BD2 /* ViewController.swift */,
 				378E988B23EF325100FD7BD2 /* Main.storyboard */,
 				378E989123EF326700FD7BD2 /* Assets.xcassets */,
 				378E989323EF326800FD7BD2 /* LaunchScreen.storyboard */,
@@ -346,7 +343,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				378E988A23EF325100FD7BD2 /* ViewController.swift in Sources */,
 				378E98C323EF5C9200FD7BD2 /* WelcomeViewController.swift in Sources */,
 				378E988623EF325100FD7BD2 /* AppDelegate.swift in Sources */,
 				378E989023EF325100FD7BD2 /* AutomotiveProgrammingChallenge.xcdatamodeld in Sources */,
