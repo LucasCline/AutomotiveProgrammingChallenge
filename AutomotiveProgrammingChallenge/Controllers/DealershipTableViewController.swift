@@ -17,6 +17,9 @@ class DealershipTableViewController: UIViewController {
         super.viewDidLoad()
         dealershipTableView.delegate = delegate
         dealershipTableView.dataSource = delegate
+        
+        let networkingManager = NetworkingManager()
+        networkingManager.downloadAndSaveAllAPIData()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

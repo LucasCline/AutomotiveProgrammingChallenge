@@ -10,8 +10,4 @@ import UIKit
 
 class WelcomeViewController: UIViewController {
     @IBOutlet weak var letsBeginButton: UIButton!
-    
-    var vehicleInfoList: [VehicleInfo] = []
-    var dealerIds: [Int] = []
-    var dealershipInfoList: [DealershipInfo] = []
 }

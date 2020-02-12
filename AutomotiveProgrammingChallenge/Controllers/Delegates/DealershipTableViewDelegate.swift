@@ -27,7 +27,8 @@ class DealershipTableViewDelegate: NSObject {
     private func fetchDealershipData() {
         CoreDataManager.shared.fetchEntity(entityName: "Dealership") { (dealerships) in
             if dealerships.count == 0 {
-                self.loadDealershipData()
+                //LUCAS - do work to display an empty table - this is a valid flow/server/data issue - no dealers for given dataset
+                //NetworkingManager().downloadAndSaveAllAPIData()
             } else {
                 self.dealerships = dealerships
                 self.viewController?.dealershipTableView.reloadData()
@@ -36,47 +37,57 @@ class DealershipTableViewDelegate: NSObject {
     }
     
     //LUCAS - Rework this
-    private func loadDealershipData() {
-        let networkingManager = NetworkingManager()
-        //get a datasetId
-        networkingManager.getDatasetId { (datasetId) in
-            //get the list of vehicles provided by a given datasetId
-            networkingManager.getVehicleList(datasetId: datasetId) { (datasetId, vehicleIds) in
-                //create a dispatch group to signal when all of the dealership requests have finished
-                let vehicleDispatchGroup = DispatchGroup()
-                //for each vehicle id in the list, request the data for the vehicle
-                vehicleIds.forEach { (vehicleId) in
-                    vehicleDispatchGroup.enter()
-                    networkingManager.getVehicleInfo(datasetId: datasetId, vehicleId: vehicleId) { (datasetId, vehicleInfo) in
-                        vehicleDispatchGroup.leave()
-                        //persist vehicle info
-                        CoreDataManager.shared.saveVehicleInfo(vehicleInfo)
-                        self.dealerIds.insert(vehicleInfo.dealerId)
-                    }
-                }
-                
-                vehicleDispatchGroup.notify(queue: .main) {
-                    print("finished the vehicle requests")
-                    let dealershipDispatchGroup = DispatchGroup()
-                    self.dealerIds.forEach { (dealerId) in
-                        dealershipDispatchGroup.enter()
-                        networkingManager.getDealershipInfo(datasetId: datasetId, dealerId: dealerId) { (datasetId, dealershipInfo) in
-                            CoreDataManager.shared.saveDealershipInfo(dealershipInfo) {
-                                dealershipDispatchGroup.leave()
-                            }
-                        }
-                    }
-                    
-                    //once the dealership data is retrieved from the server, read from core data again.
-                    //LUCAS - will this endlessly loop if server fails?
-                    //LUCAS - maybe moving this to completion handler style format is a better idea
-                    dealershipDispatchGroup.notify(queue: .main) {
-                        self.fetchDealershipData()
-                    }
-                }
-            }
-        }
-    }
+//    private func loadDealershipData() {
+//        let networkingManager = NetworkingManager()
+//        //get a datasetId
+//        networkingManager.getDatasetId { (datasetId, error) in
+//            if let error = error {
+//                print("error found - \(error)")
+//                return
+//            }
+//
+//            guard let datasetId = datasetId else {
+//                print("")
+//                return
+//            }
+//
+//            //get the list of vehicles provided by a given datasetId
+//            networkingManager.getVehicleList(datasetId: datasetId) { (datasetId, vehicleIds) in
+//                //create a dispatch group to signal when all of the dealership requests have finished
+//                let vehicleDispatchGroup = DispatchGroup()
+//                //for each vehicle id in the list, request the data for the vehicle
+//                vehicleIds.forEach { (vehicleId) in
+//                    vehicleDispatchGroup.enter()
+//                    networkingManager.getVehicleInfo(datasetId: datasetId, vehicleId: vehicleId) { (datasetId, vehicleInfo) in
+//                        vehicleDispatchGroup.leave()
+//                        //persist vehicle info
+//                        CoreDataManager.shared.saveVehicleInfo(vehicleInfo)
+//                        self.dealerIds.insert(vehicleInfo.dealerId)
+//                    }
+//                }
+//
+//                vehicleDispatchGroup.notify(queue: .main) {
+//                    print("finished the vehicle requests")
+//                    let dealershipDispatchGroup = DispatchGroup()
+//                    self.dealerIds.forEach { (dealerId) in
+//                        dealershipDispatchGroup.enter()
+//                        networkingManager.getDealershipInfo(datasetId: datasetId, dealerId: dealerId) { (dealershipInfo) in
+//                            CoreDataManager.shared.saveDealershipInfo(dealershipInfo) {
+//                                dealershipDispatchGroup.leave()
+//                            }
+//                        }
+//                    }
+//
+//                    //once the dealership data is retrieved from the server, read from core data again.
+//                    //LUCAS - will this endlessly loop if server fails?
+//                    //LUCAS - maybe moving this to completion handler style format is a better idea
+//                    dealershipDispatchGroup.notify(queue: .main) {
+//                        self.fetchDealershipData()
+//                    }
+//                }
+//            }
+//        }
+//    }
 }
 
 extension DealershipTableViewDelegate: UITableViewDelegate {
