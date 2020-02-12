@@ -12,6 +12,7 @@ import CoreData
 class VehicleTableViewController: UIViewController {
     @IBOutlet weak var vehicleTableView: UITableView!
     private var vehicles: [NSManagedObject] = []
+    var newVehicles: [VehicleInfo] = []
     var dealerId: Int?
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -19,9 +20,29 @@ class VehicleTableViewController: UIViewController {
         vehicleTableView.delegate = self
         vehicleTableView.dataSource = self
         
-        CoreDataManager.shared.fetchEntity(entityName: "Vehicle") { (vehicles) in
-            self.vehicles = vehicles.filter { $0.value(forKeyPath: "dealerId") as? Int == self.dealerId }
-            self.vehicleTableView.reloadData()
+        fetchVehicleData()
+        
+//        CoreDataManager.shared.fetchEntity(entityName: "Vehicle") { (vehicles) in
+//            self.vehicles = vehicles.filter { $0.value(forKeyPath: "dealerId") as? Int == self.dealerId }
+//            self.vehicleTableView.reloadData()
+//        }
+    }
+    
+    func fetchVehicleData() {
+        DataProvider().getVehicleData { response in
+            switch response {
+            case .success(let allVehicles):
+                self.newVehicles = allVehicles.filter { $0.dealerId == self.dealerId }
+                DispatchQueue.main.async {
+                    self.vehicleTableView.reloadData()
+                }
+                break
+            case .failure(let error):
+                print(error)
+                //LUCAS - handle no data found 
+                break
+            }
+            
         }
     }
 }
@@ -35,7 +56,7 @@ extension VehicleTableViewController: UITableViewDelegate {
 
 extension VehicleTableViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return vehicles.count
+        return newVehicles.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -44,20 +65,20 @@ extension VehicleTableViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        let vehicle = vehicles[indexPath.row]
+        let vehicle = newVehicles[indexPath.row]
+//
+//        guard let year = vehicle.value(forKeyPath: "year") as? Int,
+//            let make = vehicle.value(forKeyPath: "make") as? String,
+//            let model = vehicle.value(forKeyPath: "model") as? String,
+//            let vehicleId = vehicle.value(forKeyPath: "dealerId") as? Int,
+//            let dealerId = vehicle.value(forKeyPath: "dealerId") as? Int else {
+//                print("Unable to retrieve vehicle values for cell - returning a blank UITableViewCell")
+//                return UITableViewCell()
+//        }
         
-        guard let year = vehicle.value(forKeyPath: "year") as? Int,
-            let make = vehicle.value(forKeyPath: "make") as? String,
-            let model = vehicle.value(forKeyPath: "model") as? String,
-            let vehicleId = vehicle.value(forKeyPath: "dealerId") as? Int,
-            let dealerId = vehicle.value(forKeyPath: "dealerId") as? Int else {
-                print("Unable to retrieve vehicle values for cell - returning a blank UITableViewCell")
-                return UITableViewCell()
-        }
-        
-        cell.yearMakeModel.text = "\(year) \(make) \(model)"
-        cell.vehicleId.text = "Vehicle ID: \(vehicleId)"
-        cell.dealershipId.text = "Dealership ID: \(dealerId)"
+        cell.yearMakeModel.text = "\(vehicle.year) \(vehicle.make) \(vehicle.model)"
+        cell.vehicleId.text = "Vehicle ID: \(vehicle.vehicleId)"
+        cell.dealershipId.text = "Dealership ID: \(vehicle.dealerId)"
         
         return cell
     }

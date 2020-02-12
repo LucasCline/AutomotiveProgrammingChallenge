@@ -18,16 +18,15 @@ enum NetworkResponse<T: Any> {
     case success(data: T)
 }
 
+typealias AllAPIDataResponse = (NetworkResponse<(allVehicles: [VehicleInfo], allDealerships: [DealershipInfo])>) -> ()
+
 struct NetworkingManager {
     //call this something like triggerDownloadOfDealershipAndVehicleData()
-    func downloadAndSaveAllAPIData(completionHandler: @escaping () -> ()) {
-        triggerDatasetRequest {
-            print("finished")
-            completionHandler()
-        }
+    func downloadAndSaveAllAPIData(completionHandler: @escaping AllAPIDataResponse) {
+        triggerDatasetRequest(completionHandler: completionHandler)
     }
     
-    func triggerDatasetRequest(completionHandler: @escaping () -> ()) {
+    func triggerDatasetRequest(completionHandler: @escaping AllAPIDataResponse) {
         getDatasetId { (response) in
             switch response {
             case .success(let datasetId):
@@ -41,7 +40,7 @@ struct NetworkingManager {
         }
     }
         
-    func triggerVehicleListRequestWith(datasetId: String, completionHandler: @escaping () -> ()) {
+    func triggerVehicleListRequestWith(datasetId: String, completionHandler: @escaping AllAPIDataResponse) {
         getVehicleList(datasetId: datasetId) { (response) in
             switch response {
             case .success(let data):
@@ -54,18 +53,18 @@ struct NetworkingManager {
         }
     }
         
-    func triggerVehicleInfoRequestsWith(datasetId: String, vehicleIds: [Int], completionHandler: @escaping () -> ()) {
+    func triggerVehicleInfoRequestsWith(datasetId: String, vehicleIds: [Int], completionHandler: @escaping AllAPIDataResponse) {
         let dispatchGroup = DispatchGroup()
         var dealerIds: Set<Int> = []
+        var allVehicleData: [VehicleInfo] = []
         vehicleIds.forEach { (vehicleId) in
             dispatchGroup.enter()
             self.getVehicleInfo(datasetId: datasetId, vehicleId: vehicleId) { (response) in
                 switch response {
                 case .success(let data):
                     dealerIds.insert(data.vehicleInfo.dealerId)
-                    CoreDataManager.shared.saveVehicleInfo(data.vehicleInfo) {
-                        dispatchGroup.leave()
-                    }
+                    allVehicleData.append(data.vehicleInfo)
+                    dispatchGroup.leave()
                     break
                 case .failure(let error):
                     print(error)
@@ -77,20 +76,31 @@ struct NetworkingManager {
         
         dispatchGroup.notify(queue: .global()) {
             print("All vehicle data saved")
-            self.triggerDealershipInfoRequestsWith(datasetId: datasetId, dealershipIds: dealerIds, completionHandler: completionHandler)
+            self.triggerDealershipInfoRequestsWith(datasetId: datasetId, dealershipIds: dealerIds) { (response) in
+                switch response {
+                case .success(let allDealershipData):
+                    completionHandler(.success(data: (allVehicleData, allDealershipData)))
+                    break
+                case .failure(error: let error):
+                    completionHandler(.failure(error: error))
+                    break
+                }
+            }
         }
     }
     
-    func triggerDealershipInfoRequestsWith(datasetId: String, dealershipIds: Set<Int>, completionHandler: @escaping () -> ()) {
+    //instead of saving CoreData - this method should append the dealerInfo to an array
+    //in the notify group - we pass it back
+    func triggerDealershipInfoRequestsWith(datasetId: String, dealershipIds: Set<Int>, completionHandler: @escaping (NetworkResponse<[DealershipInfo]>) -> ()) {
         let dispatchGroup = DispatchGroup()
+        var allDealershipData: [DealershipInfo] = []
         dealershipIds.forEach { (dealershipId) in
             dispatchGroup.enter()
             self.getDealershipInfo(datasetId: datasetId, dealerId: dealershipId) { (response) in
                 switch response {
                 case .success(let dealershipInfo):
-                    CoreDataManager.shared.saveDealershipInfo(dealershipInfo) {
-                        dispatchGroup.leave()
-                    }
+                    allDealershipData.append(dealershipInfo)
+                    dispatchGroup.leave()
                     break
                 case .failure(let error):
                     print(error)
@@ -102,7 +112,7 @@ struct NetworkingManager {
         
         dispatchGroup.notify(queue: .global()) {
             print("All dealership data saved")
-            completionHandler()
+            completionHandler(.success(data: allDealershipData))
         }
     }
 
