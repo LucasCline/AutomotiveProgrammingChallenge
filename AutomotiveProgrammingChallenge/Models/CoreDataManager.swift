@@ -43,7 +43,7 @@ class CoreDataManager {
         }
     }
     
-    func saveVehicleInfo(_ vehicleInfo: VehicleInfo) {
+    func saveVehicleInfo(_ vehicleInfo: VehicleInfo, completionHandler: @escaping() -> ()) {
         guard let managedContext = persistentContainer?.viewContext else { fatalError() }
         guard let entity = NSEntityDescription.entity(forEntityName: "Vehicle", in: managedContext) else { fatalError() }
         let vehicle = NSManagedObject(entity: entity, insertInto: managedContext)
@@ -56,6 +56,7 @@ class CoreDataManager {
         
         do {
             try managedContext.save()
+            completionHandler()
         } catch let error as NSError {
             print("Could not save core data object vehicle with errors - \(error), \(error.userInfo)")
         }

@@ -23,9 +23,11 @@ enum APIError {
 
 struct NetworkingManager {
     //LUCAS - This should pass completionHandler as well - so VC knows what to do when done
-    func downloadAndSaveAllAPIData() {
+    //call this something like triggerDownloadOfDealershipAndVehicleData()
+    func downloadAndSaveAllAPIData(completionHandler: @escaping () -> ()) {
         triggerDatasetRequest {
             print("finished")
+            completionHandler()
         }
     }
     
