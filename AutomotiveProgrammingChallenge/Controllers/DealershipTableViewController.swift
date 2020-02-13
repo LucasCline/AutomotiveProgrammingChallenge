@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CoreData //for now
 
 class DealershipTableViewController: UIViewController {
     @IBOutlet weak var dealershipTableView: UITableView!
@@ -40,8 +39,6 @@ class DealershipTableViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.dealershipTableView.reloadData()
                 }
-                //LUCAS - persist here
-                //DataPersister.persist(data) //since we fetch from the server go ahead and save everything
                 break
             case .failure(let error):
                 print(error)
@@ -49,18 +46,6 @@ class DealershipTableViewController: UIViewController {
                 break
             }
         }
-        
-//        CoreDataManager.shared.fetchEntity(entityName: "Dealership") { (dealerships) in
-//            if dealerships.count == 0 {
-//                //LUCAS - do work to display an empty table - this is a valid flow/server/data issue - no dealers for given dataset
-//                //NetworkingManager().downloadAndSaveAllAPIData()
-//            } else {
-//                self.dealerships = dealerships
-//                DispatchQueue.main.async {
-//                    self.dealershipTableView.reloadData()
-//                }
-//            }
-//        }
     }
 }
 
@@ -68,7 +53,6 @@ extension DealershipTableViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let dealerId = newDealerships[indexPath.row].id
-        //let dealerId = dealerships[indexPath.row].value(forKey: "id") as? Int
         dealerIdForSegue = dealerId
         performSegue(withIdentifier: "VehicleSegue", sender: self)
         tableView.deselectRow(at: indexPath, animated: true)
@@ -87,16 +71,7 @@ extension DealershipTableViewController: UITableViewDataSource {
         }
         
         let dealership = newDealerships[indexPath.row]
-//
-//        guard let name = dealership.value(forKeyPath: "name") as? String,
-//            let id = dealership.value(forKeyPath: "id") as? Int else {
-//                print("Unable to retrieve dealership values for cell - returning a blank UITableViewCell")
-//                return UITableViewCell()
-//        }
-//
-//        cell.dealershipName.text = name
-//        cell.dealershipId.text = "ID: \(id))"
-        
+
         cell.dealershipName.text = dealership.name
         cell.dealershipId.text = "ID: \(dealership.id)"
         

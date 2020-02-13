@@ -22,7 +22,7 @@ typealias AllAPIDataResponse = (NetworkResponse<(allVehicles: [VehicleInfo], all
 
 struct NetworkingManager {
     //call this something like triggerDownloadOfDealershipAndVehicleData()
-    func downloadAndSaveAllAPIData(completionHandler: @escaping AllAPIDataResponse) {
+    func triggerDownloadOfAllAPIData(completionHandler: @escaping AllAPIDataResponse) {
         triggerDatasetRequest(completionHandler: completionHandler)
     }
     
@@ -89,7 +89,6 @@ struct NetworkingManager {
         }
     }
     
-    //instead of saving CoreData - this method should append the dealerInfo to an array
     //in the notify group - we pass it back
     func triggerDealershipInfoRequestsWith(datasetId: String, dealershipIds: Set<Int>, completionHandler: @escaping (NetworkResponse<[DealershipInfo]>) -> ()) {
         let dispatchGroup = DispatchGroup()
