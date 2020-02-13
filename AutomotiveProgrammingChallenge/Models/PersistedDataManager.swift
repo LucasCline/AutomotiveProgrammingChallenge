@@ -8,97 +8,116 @@
 
 import Foundation
 
-class PersistedDataManager {
-    private let cacheKey: String = "persistedVehicleAndDealerData"
-    private let dealershipCacheKey: String = "persistedDealershipData"
-    private let vehicleCacheKey: String = "persistedVehicleData"
+class PersistedDataManager<T: Codable> {
+    private let cacheKey: String
+//    private let dealershipCacheKey: String = "persistedDealershipData"
+//    private let vehicleCacheKey: String = "persistedVehicleData"
     
-    var datasetId: String? = "mC-pYgew1wg"
-    var dealershipCachePathURL: URL? {
+    init(cacheKey: String) {
+        self.cacheKey = cacheKey
+    }
+    
+    var cachePath: URL? {
         guard let cachesPathURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
             return nil
         }
         
-        return cachesPathURL.appendingPathComponent("dealerships")
+        return cachesPathURL.appendingPathComponent(cacheKey)
     }
+//
+//    lazy var dealershipCache: [String: [DealershipInfo]] = {
+//        guard let dealershipCachePathURL = dealershipCachePathURL else { return [:] }
+//        do {
+//            let savedData = try Data(contentsOf: dealershipCachePathURL)
+//            return try JSONDecoder().decode([String: [DealershipInfo]].self, from: savedData)
+//        } catch {
+//            print(error)
+//        }
+//
+//        return [String: [DealershipInfo]]()
+//    }()
+//
+//    lazy var vehicleCache: [String: [VehicleInfo]] = {
+//
+//    }()
     
-    var vehicleCachePathURL: URL? {
-        guard let cachesPathURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
-            return nil
-        }
-        
-        return cachesPathURL.appendingPathComponent("vehicles")
-    }
-    
-    
-    lazy var dealershipCache: [String: [DealershipInfo]] = {
-        guard let dealershipCachePathURL = dealershipCachePathURL else { return [:] }
+    lazy var cache: [String: [T]] = {
+        guard let cachePath = cachePath else { return [:] }
         do {
-            let savedData = try Data(contentsOf: dealershipCachePathURL)
-            return try JSONDecoder().decode([String: [DealershipInfo]].self, from: savedData)
+            let savedData = try Data(contentsOf: cachePath)
+            return try JSONDecoder().decode([String: [T]].self, from: savedData)
         } catch {
             print(error)
         }
         
-        return [String: [DealershipInfo]]()
+        return [String: [T]]()
     }()
     
-    lazy var vehicleCache: [String: [VehicleInfo]] = {
-        guard let vehicleCachePathURL = vehicleCachePathURL else { return [:] }
-        do {
-            let savedData = try Data(contentsOf: vehicleCachePathURL)
-            return try JSONDecoder().decode([String: [VehicleInfo]].self, from: savedData)
-        } catch {
-            print(error)
-        }
+    func retrieveDataFromDisk() -> [T] {
+        return cache[cacheKey] ?? []
+    }
+//
+//    func retrieveVehiclesFromDisk() -> [VehicleInfo] {
+//        return vehicleCache[cac] ?? []
+//    }
+//
+//    func storePersistedData(dealerships: [DealershipInfo], vehicles: [VehicleInfo]) {
+//        store(dealerships: dealerships)
+//        store(vehicles: vehicles)
+//    }
+//
+//    func store(dealerships: [DealershipInfo]) {
+//        guard let cachePathURL = dealershipCachePathURL else { return }
+//
+//        if (dealershipCache[dealershipCacheKey] == nil) {
+//            dealershipCache[dealershipCacheKey] = dealerships
+//        } else {
+//            dealershipCache.removeValue(forKey: dealershipCacheKey)
+//        }
+//
+//        do {
+//            let jsonData = try JSONEncoder().encode(dealershipCache)
+//            try jsonData.write(to: cachePathURL, options: .atomic)
+//        } catch {
+//            print("Attempt to persist dealership object failed")
+//        }
+//    }
+//
+//    func store(vehicles: [VehicleInfo]) {
+//        guard let cachePath = cachePath else { return }
+//
+//        if (cache[cacheKey] == nil) {
+//            cache[cacheKey] = vehicles as? T
+//        } else {
+//            vehicleCache.removeValue(forKey: vehicleCacheKey)
+//        }
+//
+//        do {
+//            let jsonData = try JSONEncoder().encode(vehicleCache)
+//            try jsonData.write(to: cachePathURL, options: .atomic)
+//        } catch {
+//            print("Attempt to persist vehicle object failed")
+//        }
+//    }
+    
+    func store<T: Codable>(data: [T]) {
+        guard let cachePath = cachePath else { return }
         
-        return [String: [VehicleInfo]]()
-    }()
-    
-    func retrieveDealershipsFromDisk() -> [DealershipInfo] {
-        return dealershipCache[dealershipCacheKey] ?? []
-    }
-    
-    func retrieveVehiclesFromDisk() -> [VehicleInfo] {
-        return vehicleCache[vehicleCacheKey] ?? []
-    }
-    
-    func storePersistedData(dealerships: [DealershipInfo], vehicles: [VehicleInfo]) {
-        store(dealerships: dealerships)
-        store(vehicles: vehicles)
-    }
-    
-    func store(dealerships: [DealershipInfo]) {
-        guard let cachePathURL = dealershipCachePathURL else { return }
-
-        if (dealershipCache[dealershipCacheKey] == nil) {
-            dealershipCache[dealershipCacheKey] = dealerships
+        if (cache[cacheKey] == nil) {
+            cache[cacheKey] = data
         } else {
-            dealershipCache.removeValue(forKey: dealershipCacheKey)
+            cache.removeValue(forKey: cacheKey)
         }
         
         do {
-            let jsonData = try JSONEncoder().encode(dealershipCache)
-            try jsonData.write(to: cachePathURL, options: .atomic)
+            let jsonData = try JSONEncoder().encode(cache)
+            try jsonData.write(to: cachePath, options: .atomic)
         } catch {
-            print("Attempt to persist dealership object failed")
+            print("Attempt to persist object failed")
         }
     }
-    
-    func store(vehicles: [VehicleInfo]) {
-        guard let cachePathURL = vehicleCachePathURL else { return }
-
-        if (vehicleCache[vehicleCacheKey] == nil) {
-            vehicleCache[vehicleCacheKey] = vehicles
-        } else {
-            vehicleCache.removeValue(forKey: vehicleCacheKey)
-        }
-        
-        do {
-            let jsonData = try JSONEncoder().encode(vehicleCache)
-            try jsonData.write(to: cachePathURL, options: .atomic)
-        } catch {
-            print("Attempt to persist vehicle object failed")
-        }
-    }
+//
+//    func deletePersistedData() {
+//        storePersistedData(dealerships: [], vehicles: [])
+//    }
 }

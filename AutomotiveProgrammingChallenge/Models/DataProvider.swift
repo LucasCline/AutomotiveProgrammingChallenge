@@ -43,11 +43,11 @@ struct DataProvider {
             switch response {
             case .success(let data):
                 completionHandler(.success(data: data))
-                print("persised data found - no need to make network call") //LUCAS - DEbug statement
+                print("persisted data found - no need to make network call") //LUCAS - DEbug statement
                 break
             case .failure(let error):
                 print(error)
-                print("No data found  persisted - need to make network call") //LUCAS - DEbug statement
+                print("No persisted data found - need to make network call") //LUCAS - DEbug statement
                 self.getDataFromServer(completionHandler: completionHandler)
                 break
             }
@@ -56,9 +56,10 @@ struct DataProvider {
     
     //LUCAS - This method will reach out to the disk storage similar to how getDataFromAPI uses networking manager
     func getPersistedData(completionHandler: @escaping AllAPIDataResponse) {
-        let persistedDataManager = PersistedDataManager()
-        let dealerships = persistedDataManager.retrieveDealershipsFromDisk()
-        let vehicles = persistedDataManager.retrieveVehiclesFromDisk()
+        let dealershipPDM = PersistedDataManager<DealershipInfo>(cacheKey: "persistedDealershipData")
+        let vehiclePDM = PersistedDataManager<VehicleInfo>(cacheKey: "persistedVehicleData")
+        let dealerships = dealershipPDM.retrieveDataFromDisk()
+        let vehicles = vehiclePDM.retrieveDataFromDisk()
         
         //LUCAS - do the same thing for vehicles?
         guard dealerships.count > 0 else {
@@ -77,34 +78,21 @@ struct DataProvider {
     //this method will reach out to the server and attempt to get the API data
     func getDataFromServer(completionHandler: @escaping AllAPIDataResponse) {
         let networkingManager = NetworkingManager()
-        let persistedDataManager = PersistedDataManager()
-        var dataset: String? = persistedDataManager.datasetId //LUCAS - need to decide what to do with dataset//maybe do a fake check for an expiration or something? Give it a timer to reset, but never actually let it reset
-        
-        //if the dataset already exists - we skip getting a new dataset and just trigger the vehicle list again, otherwise download all the data (dataset -> vehicle list -> [vehicle info] -> [dealer info])
-        if let dataset = dataset {
-            networkingManager.triggerVehicleListRequestWith(datasetId: dataset) { (response) in
-                switch response {
-                case .success(let data):
-                    persistedDataManager.storePersistedData(dealerships: data.allDealerships, vehicles: data.allVehicles)
-                    completionHandler(.success(data: data))
-                    break
-                case .failure(let error):
-                    completionHandler(.failure(error: error))
-                }
-            }
-        } else {
-            networkingManager.triggerDownloadOfAllAPIData { (response) in
-                switch response {
-                case .success(let data):
-                    persistedDataManager.storePersistedData(dealerships: data.allDealerships, vehicles: data.allVehicles)
-                    completionHandler(.success(data: data))
-                    print(data)
-                    break
-                case .failure(let error):
-                    print(error)
-                    completionHandler(.failure(error: error))
-                    break
-                }
+        let dealershipPDM = PersistedDataManager<DealershipInfo>(cacheKey: "persistedDealershipData")
+        let vehiclePDM = PersistedDataManager<VehicleInfo>(cacheKey: "persistedVehicleData")
+
+        networkingManager.triggerDownloadOfAllAPIData { (response) in
+            switch response {
+            case .success(let data):
+                dealershipPDM.store(data: data.allDealerships)
+                vehiclePDM.store(data: data.allVehicles)
+                completionHandler(.success(data: data))
+                print(data)
+                break
+            case .failure(let error):
+                print(error)
+                completionHandler(.failure(error: error))
+                break
             }
         }
     }
