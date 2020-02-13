@@ -100,7 +100,7 @@ class PersistedDataManager<T: Codable> {
 //        }
 //    }
     
-    func store<T: Codable>(data: [T]) {
+    func store(data: [T]) {
         guard let cachePath = cachePath else { return }
         
         if (cache[cacheKey] == nil) {
