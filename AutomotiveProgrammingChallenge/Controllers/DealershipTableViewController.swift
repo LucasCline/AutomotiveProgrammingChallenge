@@ -17,6 +17,7 @@ class DealershipTableViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         dealershipTableView.delegate = self
         dealershipTableView.dataSource = self
     
@@ -51,7 +52,6 @@ class DealershipTableViewController: UIViewController {
 
 extension DealershipTableViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
         let dealerId = newDealerships[indexPath.row].id
         dealerIdForSegue = dealerId
         performSegue(withIdentifier: "VehicleSegue", sender: self)

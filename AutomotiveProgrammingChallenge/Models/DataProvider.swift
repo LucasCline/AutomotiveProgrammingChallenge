@@ -78,7 +78,7 @@ struct DataProvider {
     func getDataFromServer(completionHandler: @escaping AllAPIDataResponse) {
         let networkingManager = NetworkingManager()
         let persistedDataManager = PersistedDataManager()
-        var dataset: String? = "mC-pYgew1wg" //LUCAS - need to decide what to do with dataset//maybe do a fake check for an expiration or something? Give it a timer to reset, but never actually let it reset
+        var dataset: String? = persistedDataManager.datasetId //LUCAS - need to decide what to do with dataset//maybe do a fake check for an expiration or something? Give it a timer to reset, but never actually let it reset
         
         //if the dataset already exists - we skip getting a new dataset and just trigger the vehicle list again, otherwise download all the data (dataset -> vehicle list -> [vehicle info] -> [dealer info])
         if let dataset = dataset {
