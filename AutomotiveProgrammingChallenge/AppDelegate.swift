@@ -12,8 +12,12 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        //LUCAS - Debug line
-        //PersistedDataManager().deletePersistedData()
+        //LUCAS - Debug lines
+//        let vehiclePDM = PersistedDataManager<VehicleInfo>(cacheKey: Constants.vehicleCacheKey)
+//        let dealershipPDM = PersistedDataManager<DealershipInfo>(cacheKey: Constants.dealershipCacheKey)
+//        vehiclePDM.deletePersistedData()
+//        dealershipPDM.deletePersistedData()
+//        
         
         return true
     }

@@ -8,11 +8,14 @@
 
 import Foundation
 
+enum Constants {
+    static let dealershipCacheKey = "persistedDealershipData"
+    static let vehicleCacheKey = "persistedVehicleData"
+}
+
 class PersistedDataManager<T: Codable> {
     private let cacheKey: String
-//    private let dealershipCacheKey: String = "persistedDealershipData"
-//    private let vehicleCacheKey: String = "persistedVehicleData"
-    
+
     init(cacheKey: String) {
         self.cacheKey = cacheKey
     }
@@ -24,22 +27,6 @@ class PersistedDataManager<T: Codable> {
         
         return cachesPathURL.appendingPathComponent(cacheKey)
     }
-//
-//    lazy var dealershipCache: [String: [DealershipInfo]] = {
-//        guard let dealershipCachePathURL = dealershipCachePathURL else { return [:] }
-//        do {
-//            let savedData = try Data(contentsOf: dealershipCachePathURL)
-//            return try JSONDecoder().decode([String: [DealershipInfo]].self, from: savedData)
-//        } catch {
-//            print(error)
-//        }
-//
-//        return [String: [DealershipInfo]]()
-//    }()
-//
-//    lazy var vehicleCache: [String: [VehicleInfo]] = {
-//
-//    }()
     
     lazy var cache: [String: [T]] = {
         guard let cachePath = cachePath else { return [:] }
@@ -56,50 +43,7 @@ class PersistedDataManager<T: Codable> {
     func retrieveDataFromDisk() -> [T] {
         return cache[cacheKey] ?? []
     }
-//
-//    func retrieveVehiclesFromDisk() -> [VehicleInfo] {
-//        return vehicleCache[cac] ?? []
-//    }
-//
-//    func storePersistedData(dealerships: [DealershipInfo], vehicles: [VehicleInfo]) {
-//        store(dealerships: dealerships)
-//        store(vehicles: vehicles)
-//    }
-//
-//    func store(dealerships: [DealershipInfo]) {
-//        guard let cachePathURL = dealershipCachePathURL else { return }
-//
-//        if (dealershipCache[dealershipCacheKey] == nil) {
-//            dealershipCache[dealershipCacheKey] = dealerships
-//        } else {
-//            dealershipCache.removeValue(forKey: dealershipCacheKey)
-//        }
-//
-//        do {
-//            let jsonData = try JSONEncoder().encode(dealershipCache)
-//            try jsonData.write(to: cachePathURL, options: .atomic)
-//        } catch {
-//            print("Attempt to persist dealership object failed")
-//        }
-//    }
-//
-//    func store(vehicles: [VehicleInfo]) {
-//        guard let cachePath = cachePath else { return }
-//
-//        if (cache[cacheKey] == nil) {
-//            cache[cacheKey] = vehicles as? T
-//        } else {
-//            vehicleCache.removeValue(forKey: vehicleCacheKey)
-//        }
-//
-//        do {
-//            let jsonData = try JSONEncoder().encode(vehicleCache)
-//            try jsonData.write(to: cachePathURL, options: .atomic)
-//        } catch {
-//            print("Attempt to persist vehicle object failed")
-//        }
-//    }
-    
+ 
     func store(data: [T]) {
         guard let cachePath = cachePath else { return }
         
@@ -116,8 +60,9 @@ class PersistedDataManager<T: Codable> {
             print("Attempt to persist object failed")
         }
     }
-//
-//    func deletePersistedData() {
-//        storePersistedData(dealerships: [], vehicles: [])
-//    }
+
+    //LUCAS - Debug Only
+    func deletePersistedData() {
+        store(data: [])
+    }
 }

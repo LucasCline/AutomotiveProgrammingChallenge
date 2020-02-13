@@ -8,6 +8,7 @@
 
 import UIKit
 
+//LUCAS - rework these 
 let datasetIdURL = "http://api.coxauto-interview.com/api/datasetId"
 let vehicleListURL = "http://api.coxauto-interview.com/api/"
 let vehicleInfoURL = "http://api.coxauto-interview.com/api/"
