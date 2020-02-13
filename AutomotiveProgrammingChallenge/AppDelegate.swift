@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        let dealershipPDM = PersistedDataManager<DealershipInfo>(cacheKey: Constants.dealershipCacheKey)
 //        vehiclePDM.deletePersistedData()
 //        dealershipPDM.deletePersistedData()
-//        
+
         
         return true
     }
