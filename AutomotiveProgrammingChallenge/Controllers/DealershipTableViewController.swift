@@ -13,7 +13,7 @@ class DealershipTableViewController: UIViewController {
     private var dealerIdForSegue: Int?
     private var dealerIds: Set<Int> = []
     
-    private var newDealerships: [DealershipInfo] = []
+    var dealerships: [DealershipInfo] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,19 +24,11 @@ class DealershipTableViewController: UIViewController {
         fetchDealershipData()
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let destinationVC = segue.destination as? VehicleTableViewController else {
-            return
-        }
-        
-        destinationVC.dealerId = dealerIdForSegue
-    }
-    
     private func fetchDealershipData() {
         DataProvider().getDealershipData { (response) in
             switch response {
             case .success(let dealerships):
-                self.newDealerships = dealerships
+                self.dealerships = dealerships
                 DispatchQueue.main.async {
                     self.dealershipTableView.reloadData()
                 }
@@ -48,11 +40,19 @@ class DealershipTableViewController: UIViewController {
             }
         }
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let destinationVC = segue.destination as? VehicleTableViewController else {
+            return
+        }
+        
+        destinationVC.dealerId = dealerIdForSegue
+    }
 }
 
 extension DealershipTableViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let dealerId = newDealerships[indexPath.row].id
+        let dealerId = dealerships[indexPath.row].id
         dealerIdForSegue = dealerId
         performSegue(withIdentifier: "VehicleSegue", sender: self)
         tableView.deselectRow(at: indexPath, animated: true)
@@ -61,7 +61,7 @@ extension DealershipTableViewController: UITableViewDelegate {
 
 extension DealershipTableViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.newDealerships.count
+        return self.dealerships.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -70,7 +70,7 @@ extension DealershipTableViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        let dealership = newDealerships[indexPath.row]
+        let dealership = dealerships[indexPath.row]
 
         cell.dealershipName.text = dealership.name
         cell.dealershipId.text = "ID: \(dealership.id)"

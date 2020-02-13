@@ -35,7 +35,6 @@ class VehicleTableViewController: UIViewController {
                 //LUCAS - handle no data found 
                 break
             }
-            
         }
     }
 }

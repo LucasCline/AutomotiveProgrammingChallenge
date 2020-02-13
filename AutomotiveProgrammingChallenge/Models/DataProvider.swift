@@ -38,7 +38,7 @@ struct DataProvider {
     }
     
     //this method gets BOTH the dealership and the vehicle data -- it first attempts to get it from disk storage, then, if unsuccessful, tries to get it from the server
-    private func getAllAPIData(completionHandler: @escaping AllAPIDataResponse) {
+    func getAllAPIData(completionHandler: @escaping AllAPIDataResponse) {
         getPersistedData { (response) in
             switch response {
             case .success(let data):
