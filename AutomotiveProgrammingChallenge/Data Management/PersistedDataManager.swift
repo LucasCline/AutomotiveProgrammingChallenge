@@ -44,12 +44,17 @@ class PersistedDataManager<T: Codable> {
         guard let cachesPathURL = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first else {
             return nil
         }
-        
+
         return cachesPathURL.appendingPathComponent(cacheKey)
     }
     
     private lazy var cache: [String: [T]] = {
         guard let cachePath = cachePath else { return [:] }
+        
+        guard FileManager.default.fileExists(atPath: cachePath.path) else {
+            return [String: [T]]()
+        }
+        
         do {
             let savedData = try Data(contentsOf: cachePath)
             return try JSONDecoder().decode([String: [T]].self, from: savedData)

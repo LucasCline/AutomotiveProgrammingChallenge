@@ -49,7 +49,7 @@ struct DataProvider {
 
     static private func getDataFromServer(completionHandler: @escaping (NetworkResponse<[DealershipInfo]>) -> ()) {
         let networkingManager = NetworkingManager()
-        let dealershipPDM = PersistedDataManager<DealershipInfo>(cacheKey: "persistedDealershipData")
+        let dealershipPDM = PersistedDataManager<DealershipInfo>(cacheKey: Constants.dealershipCacheKey)
 
         networkingManager.triggerDownloadOfAllAPIData { (response) in
             switch response {
