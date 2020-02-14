@@ -10,7 +10,6 @@ import Foundation
 
 enum Constants {
     static let dealershipCacheKey = "persistedDealershipData"
-    static let vehicleCacheKey = "persistedVehicleData"
 }
 
 class PersistedDataManager<T: Codable> {
@@ -36,14 +35,9 @@ class PersistedDataManager<T: Codable> {
         do {
             let jsonData = try JSONEncoder().encode(cache)
             try jsonData.write(to: cachePath, options: .atomic)
-        } catch {
-            print("Attempt to persist object failed")
+        } catch let encodingError {
+            print(encodingError)
         }
-    }
-
-    //LUCAS - Debug Only
-    func deletePersistedData() {
-        store(data: [])
     }
     
     private var cachePath: URL? {
@@ -59,8 +53,8 @@ class PersistedDataManager<T: Codable> {
         do {
             let savedData = try Data(contentsOf: cachePath)
             return try JSONDecoder().decode([String: [T]].self, from: savedData)
-        } catch {
-            print(error)
+        } catch let decodingError {
+            print(decodingError)
         }
         
         return [String: [T]]()

@@ -61,7 +61,6 @@ extension DealershipTableViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "DealershipCell", for: indexPath) as? DealershipTableViewCell else {
-            print("Unable to cast the table view cell to a DealershipCell -- returning a blank UITableViewCell")
             return UITableViewCell()
         }
         

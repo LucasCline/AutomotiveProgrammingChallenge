@@ -48,7 +48,6 @@ extension VehicleTableViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "VehicleCell", for: indexPath) as? VehicleTableViewCell else {
-            print("Unable to cast the table view cell to a VehicleCell -- returning a blank UITableViewCell")
             return UITableViewCell()
         }
         

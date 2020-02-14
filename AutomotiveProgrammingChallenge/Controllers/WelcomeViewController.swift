@@ -11,7 +11,7 @@ import UIKit
 class WelcomeViewController: UIViewController {
     @IBOutlet weak var letsBeginButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-    private var dealerships: [DealershipInfo] = []
+    private var dealershipsForSegue: [DealershipInfo] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,11 +21,10 @@ class WelcomeViewController: UIViewController {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let destinationVC = segue.destination as? DealershipTableViewController else {
-            print("Segue destination is not DealershipTableViewController - something went wrong.")
             return
         }
         
-        destinationVC.dealerships = dealerships
+        destinationVC.dealerships = dealershipsForSegue
     }
     
     @IBAction func letsBeginButtonTapped(_ sender: Any) {
@@ -47,14 +46,13 @@ class WelcomeViewController: UIViewController {
             }
 
             switch response {
-            case .success(let data):
-                self.dealerships = data.allDealerships
+            case .success(let dealerships):
+                self.dealershipsForSegue = dealerships
                 DispatchQueue.main.async {
                     self.performSegue(withIdentifier: "DealershipSegue", sender: self)
                 }
                 break
             case .failure(let error):
-                print(error)
                 self.displayAlertForRequestFailureWith(error: error)
                 break
             }
