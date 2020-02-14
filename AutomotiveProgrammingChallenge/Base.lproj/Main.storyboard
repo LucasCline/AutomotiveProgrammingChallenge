@@ -45,7 +45,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" id="d7G-GN-xdJ"/>
+                    <navigationItem key="navigationItem" id="d7G-GN-xdJ">
+                        <barButtonItem key="backBarButtonItem" title=" " id="Ykr-3C-YJ9"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="activityIndicator" destination="kmD-Vz-LW1" id="azW-q4-gh2"/>
                         <outlet property="letsBeginButton" destination="Bua-LV-F3e" id="MIf-I4-43f"/>
@@ -56,7 +58,7 @@
             </objects>
             <point key="canvasLocation" x="1144.9275362318842" y="116.51785714285714"/>
         </scene>
-        <!--Dealership Table View Controller-->
+        <!--Dealerships-->
         <scene sceneID="oHx-8P-VRm">
             <objects>
                 <viewController id="nfR-bF-rzE" customClass="DealershipTableViewController" customModule="AutomotiveProgrammingChallenge" customModuleProvider="target" sceneMemberID="viewController">
@@ -115,7 +117,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="0Hw-We-dhj"/>
                     </view>
-                    <navigationItem key="navigationItem" id="04m-Tv-hdh"/>
+                    <navigationItem key="navigationItem" title="Dealerships" id="04m-Tv-hdh">
+                        <barButtonItem key="backBarButtonItem" title=" " id="hbb-Ag-4WC"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="dealershipTableView" destination="V2M-FI-uWO" id="HyM-gF-CsM"/>
                         <segue destination="z9P-4C-RnI" kind="show" identifier="VehicleSegue" id="4w9-3R-Ago"/>
@@ -125,7 +129,7 @@
             </objects>
             <point key="canvasLocation" x="1918.840579710145" y="116.51785714285714"/>
         </scene>
-        <!--Vehicle Table View Controller-->
+        <!--Vehicles-->
         <scene sceneID="lJy-Fg-XIH">
             <objects>
                 <viewController id="z9P-4C-RnI" customClass="VehicleTableViewController" customModule="AutomotiveProgrammingChallenge" customModuleProvider="target" sceneMemberID="viewController">
@@ -194,7 +198,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="gj9-7o-fP9"/>
                     </view>
-                    <navigationItem key="navigationItem" id="qQP-lP-qTR"/>
+                    <navigationItem key="navigationItem" title="Vehicles" id="qQP-lP-qTR">
+                        <barButtonItem key="backBarButtonItem" title=" " id="13y-rZ-ZjY"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="vehicleTableView" destination="bcM-HE-h8j" id="Oks-6F-HiU"/>
                     </connections>
