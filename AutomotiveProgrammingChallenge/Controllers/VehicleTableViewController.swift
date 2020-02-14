@@ -8,7 +8,6 @@
 
 import UIKit
 
-//LUCAS - make rows not selectable or at least deselect them in didselect
 class VehicleTableViewController: UIViewController {
     @IBOutlet weak var vehicleTableView: UITableView!
     var vehicles: [VehicleInfo] = []
@@ -18,6 +17,8 @@ class VehicleTableViewController: UIViewController {
         vehicleTableView.delegate = self
         vehicleTableView.dataSource = self
         
+        
+        //LUCAS - should i try to grab this out of storage if its 0 first? right now its being passed in from the previous VC. maybe it gets lost in memory or something if something weird happens with the phone? so far havent been able to produce that issue
         if vehicles.count == 0 {
             DispatchQueue.main.async {
                 self.displayAlertForNoVehicleDataFound()

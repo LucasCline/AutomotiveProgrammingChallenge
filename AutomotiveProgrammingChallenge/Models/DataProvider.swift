@@ -54,11 +54,11 @@ struct DataProvider {
             switch response {
             case .success(let data):
                 completionHandler(.success(data: data))
-                print("persisted data found - no need to make network call") //LUCAS - DEbug statement
+                print("persisted data found - no need to make network call")
                 break
             case .failure(let error): //LUCAS - dont really need this error - we arent going to display it to the user, remove "let error" or just print anyways?
                 print(error.localizedDescription)
-                print("No persisted data found - need to make network call") //LUCAS - DEbug statement
+                print("No persisted data found - need to make network call")
                 self.getDataFromServer(completionHandler: completionHandler)
                 break
             }

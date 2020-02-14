@@ -20,6 +20,7 @@ class DealershipTableViewController: UIViewController {
         dealershipTableView.delegate = self
         dealershipTableView.dataSource = self
         
+        //LUCAS - should i try to grab this out of storage if its 0 first? right now its being passed in from the previous VC. maybe it gets lost in memory or something if something weird happens with the phone? so far havent been able to produce that issue
         if dealerships.count == 0 {
             DispatchQueue.main.async {
                 self.displayAlertForNoDealershipDataFound()
