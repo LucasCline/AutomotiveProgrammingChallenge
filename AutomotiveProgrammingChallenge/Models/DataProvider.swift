@@ -53,18 +53,21 @@ struct DataProvider {
         getPersistedData { (response) in
             switch response {
             case .success(let data):
-                completionHandler(.success(data: data))
-                print("persisted data found - no need to make network call")
+                if data.allDealerships.count == 0 {
+                    self.getDataFromServer(completionHandler: completionHandler)
+                } else {
+                    print("persisted data found - no need to make network call")
+                    completionHandler(.success(data: data))
+                }
                 break
-            case .failure(let error): //LUCAS - dont really need this error - we arent going to display it to the user, remove "let error" or just print anyways?
-                print(error.localizedDescription)
-                print("No persisted data found - need to make network call")
-                self.getDataFromServer(completionHandler: completionHandler)
+            case .failure(let error):
+                completionHandler(.failure(error: error))
                 break
             }
         }
     }
     
+    //LUCAS - REMOVE 2nd PDM - fix all responses to be just network
     static func getPersistedData(completionHandler: @escaping AllAPIDataResponse) {
         DispatchQueue.global(qos: .userInitiated).async {
             let dealershipPDM = PersistedDataManager<DealershipInfo>(cacheKey: Constants.dealershipCacheKey)
@@ -72,16 +75,6 @@ struct DataProvider {
             
             let dealerships = dealershipPDM.retrieveDataFromDisk()
             let vehicles = vehiclePDM.retrieveDataFromDisk()
-            
-            guard dealerships.count > 0 else {
-                completionHandler(.failure(error: DataProviderError.noDataFoundOnDisk))
-                return
-            }
-            
-            guard vehicles.count > 0 else {
-                completionHandler(.failure(error: DataProviderError.noDataFoundOnDisk))
-                return
-            }
             
             completionHandler(.success(data: (allVehicles: vehicles, allDealerships: dealerships)))
         }
@@ -91,15 +84,12 @@ struct DataProvider {
     static func getDataFromServer(completionHandler: @escaping AllAPIDataResponse) {
         let networkingManager = NetworkingManager()
         let dealershipPDM = PersistedDataManager<DealershipInfo>(cacheKey: "persistedDealershipData")
-        let vehiclePDM = PersistedDataManager<VehicleInfo>(cacheKey: "persistedVehicleData")
 
         networkingManager.triggerDownloadOfAllAPIData { (response) in
             switch response {
             case .success(let data):
-                dealershipPDM.store(data: data.allDealerships) //LUCAS - do we need to store both? is there any reason to hang on to vehicles if we already have them in dealerships - like may we need to retrieve them without caring about their dealership relationship?
-                vehiclePDM.store(data: data.allVehicles)
+                dealershipPDM.store(data: data.allDealerships)
                 completionHandler(.success(data: data))
-                //print(data)
                 break
             case .failure(let error):
                 print(error)

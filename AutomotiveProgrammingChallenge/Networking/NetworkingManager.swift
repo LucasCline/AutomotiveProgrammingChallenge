@@ -21,21 +21,21 @@ enum NetworkError: LocalizedError {
     case notSuccessful
     case couldNotCreateURL
     
-    //LUCAS - these are supposed to be for displaying to the user? better way to do this? 
     var errorDescription: String? {
         switch self {
         case .noResponse:
-            return NSLocalizedString("No response received from the server.", comment: "")
+            return "No response received from the server."
         case .noData:
-            return NSLocalizedString("No data found in the request.", comment: "")
+            return "No data found in the request."
         case .notSuccessful:
-            return NSLocalizedString("Request not successful.", comment: "")
+            return "Request not successful."
         case .couldNotCreateURL:
-            return NSLocalizedString("Unable to create URL.", comment: "")
+            return "Unable to create URL."
         }
     }
 }
 
+//LUCAS - remove this
 typealias AllAPIDataResponse = (NetworkResponse<(allVehicles: [VehicleInfo], allDealerships: [DealershipInfo])>) -> ()
 
 struct NetworkingManager {
