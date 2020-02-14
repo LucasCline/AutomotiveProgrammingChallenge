@@ -19,7 +19,6 @@ class WelcomeViewController: UIViewController {
         activityIndicator.isHidden = true
     }
     
-    //LUCAS - there is a problem nothing to do with this method - when you retrieve dealerships from disk - no vehicle info is being stored.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let destinationVC = segue.destination as? DealershipTableViewController else {
             print("Segue destination is not DealershipTableViewController - something went wrong.")
