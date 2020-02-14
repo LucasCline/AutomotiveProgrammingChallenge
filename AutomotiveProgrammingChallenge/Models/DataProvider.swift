@@ -10,7 +10,7 @@ import Foundation
 
 struct DataProvider {
     //this method's completion handler contains all the vehicle data
-    func getVehicleData(completionHandler: @escaping (NetworkResponse<[VehicleInfo]>) -> ()) {
+    static func getVehicleData(completionHandler: @escaping (NetworkResponse<[VehicleInfo]>) -> ()) {
         getAllAPIData { (response) in
             switch response {
             case .success(let data):
@@ -24,7 +24,7 @@ struct DataProvider {
     }
     
     //this method's completion handler contains all the dealership data
-    func getDealershipData(completionHandler: @escaping (NetworkResponse<[DealershipInfo]>) -> ()) {
+    static func getDealershipData(completionHandler: @escaping (NetworkResponse<[DealershipInfo]>) -> ()) {
         getAllAPIData { (response) in
             switch response {
             case .success(let data):
@@ -38,7 +38,7 @@ struct DataProvider {
     }
     
     //this method gets BOTH the dealership and the vehicle data -- it first attempts to get it from disk storage, then, if unsuccessful, tries to get it from the server
-    func getAllAPIData(completionHandler: @escaping AllAPIDataResponse) {
+    static func getAllAPIData(completionHandler: @escaping AllAPIDataResponse) {
         getPersistedData { (response) in
             switch response {
             case .success(let data):
@@ -54,28 +54,30 @@ struct DataProvider {
         }
     }
     
-    //This method will reach out to the disk storage to see if persisted data can be found
-    func getPersistedData(completionHandler: @escaping AllAPIDataResponse) {
-        let dealershipPDM = PersistedDataManager<DealershipInfo>(cacheKey: Constants.dealershipCacheKey)
-        let vehiclePDM = PersistedDataManager<VehicleInfo>(cacheKey: Constants.vehicleCacheKey)
-        let dealerships = dealershipPDM.retrieveDataFromDisk()
-        let vehicles = vehiclePDM.retrieveDataFromDisk()
-        
-        guard dealerships.count > 0 else {
-            completionHandler(.failure(error: "No dealership data found persisted on disk"))
-            return
+    static func getPersistedData(completionHandler: @escaping AllAPIDataResponse) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let dealershipPDM = PersistedDataManager<DealershipInfo>(cacheKey: Constants.dealershipCacheKey)
+            let vehiclePDM = PersistedDataManager<VehicleInfo>(cacheKey: Constants.vehicleCacheKey)
+            
+            let dealerships = dealershipPDM.retrieveDataFromDisk()
+            let vehicles = vehiclePDM.retrieveDataFromDisk()
+            
+            guard dealerships.count > 0 else {
+                completionHandler(.failure(error: "No dealership data found persisted on disk"))
+                return
+            }
+            
+            guard vehicles.count > 0 else {
+                completionHandler(.failure(error: ""))
+                return
+            }
+            
+            completionHandler(.success(data: (allVehicles: vehicles, allDealerships: dealerships)))
         }
-        
-        guard vehicles.count > 0 else {
-            completionHandler(.failure(error: "No vehicle data found persisted on disk"))
-            return
-        }
-        
-        completionHandler(.success(data: (allVehicles: vehicles, allDealerships: dealerships)))
     }
-    
+
     //This method will reach out to the server and attempt to get the API data
-    func getDataFromServer(completionHandler: @escaping AllAPIDataResponse) {
+    static func getDataFromServer(completionHandler: @escaping AllAPIDataResponse) {
         let networkingManager = NetworkingManager()
         let dealershipPDM = PersistedDataManager<DealershipInfo>(cacheKey: "persistedDealershipData")
         let vehiclePDM = PersistedDataManager<VehicleInfo>(cacheKey: "persistedVehicleData")

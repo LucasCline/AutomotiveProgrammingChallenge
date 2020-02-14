@@ -8,6 +8,7 @@
 
 import UIKit
 
+//LUCAS - make rows not selectable or at least deselect them in didselect
 class VehicleTableViewController: UIViewController {
     @IBOutlet weak var vehicleTableView: UITableView!
     var newVehicles: [VehicleInfo] = []
@@ -22,9 +23,10 @@ class VehicleTableViewController: UIViewController {
     }
     
     func fetchVehicleData() {
-        DataProvider().getVehicleData { response in
+        DataProvider.getVehicleData { response in
             switch response {
             case .success(let allVehicles):
+                //LUCAS - remove this filter - since we added vehicles to dealers
                 self.newVehicles = allVehicles.filter { $0.dealerId == self.dealerId }
                 DispatchQueue.main.async {
                     self.vehicleTableView.reloadData()

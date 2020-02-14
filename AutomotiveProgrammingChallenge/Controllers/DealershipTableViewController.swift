@@ -20,12 +20,16 @@ class DealershipTableViewController: UIViewController {
         
         dealershipTableView.delegate = self
         dealershipTableView.dataSource = self
-    
+        
+        //LUCAS - pass dealerships in segue
+        //if dealerships.count == 0 {
+        //fetch
+        //}
         fetchDealershipData()
     }
     
     private func fetchDealershipData() {
-        DataProvider().getDealershipData { (response) in
+        DataProvider.getDealershipData { (response) in
             switch response {
             case .success(let dealerships):
                 self.dealerships = dealerships

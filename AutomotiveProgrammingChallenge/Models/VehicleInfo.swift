@@ -33,6 +33,7 @@ struct VehicleInfo: Codable {
 struct DealershipInfo: Codable {
     var id: Int
     var name: String
+    var vehicles: [VehicleInfo] = [] //LUCAS -
     enum CodingKeys: String, CodingKey {
         case id = "dealerId"
         case name

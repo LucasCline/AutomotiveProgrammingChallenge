@@ -8,15 +8,31 @@
 
 import UIKit
 
-//LUCAS - rework these 
-let datasetIdURL = "http://api.coxauto-interview.com/api/datasetId"
-let vehicleListURL = "http://api.coxauto-interview.com/api/"
-let vehicleInfoURL = "http://api.coxauto-interview.com/api/"
-let dealershipInfoURL = "http://api.coxauto-interview.com/api/"
+private let rootAPIURL = "http://api.coxauto-interview.com/api/"
 
 enum NetworkResponse<T: Any> {
     case failure(error: Error)
     case success(data: T)
+}
+
+enum NetworkError: Error {
+    case noResponse
+    case noData
+    case notSuccessful
+    case couldNotCreateURL
+    
+    var localizedDescription: String {
+        switch self {
+        case .noResponse:
+            return "No response received from the server."
+        case .noData:
+            return "No data found in the request."
+        case .notSuccessful:
+            return "Request not successful."
+        case .couldNotCreateURL:
+            return "Unable to create URL."
+        }
+    }
 }
 
 typealias AllAPIDataResponse = (NetworkResponse<(allVehicles: [VehicleInfo], allDealerships: [DealershipInfo])>) -> ()
@@ -35,7 +51,7 @@ struct NetworkingManager {
                 self.triggerVehicleListRequestWith(datasetId: datasetId, completionHandler: completionHandler)
                 break
             case .failure(let error):
-                print(error)
+                completionHandler(.failure(error: error))
                 break
             }
         }
@@ -48,7 +64,7 @@ struct NetworkingManager {
                 self.triggerVehicleInfoRequestsWith(datasetId: data.dataset, vehicleIds: data.vehicleIds, completionHandler: completionHandler)
                 break
             case .failure(let error):
-                print(error)
+                completionHandler(.failure(error: error))
                 break
             }
         }
@@ -58,12 +74,14 @@ struct NetworkingManager {
         let dispatchGroup = DispatchGroup()
         var dealerIds: Set<Int> = []
         var allVehicleData: [VehicleInfo] = []
+        var dealerVehicleDictionary: [Int: [Int]] = [:]
         vehicleIds.forEach { (vehicleId) in
             dispatchGroup.enter()
             self.getVehicleInfo(datasetId: datasetId, vehicleId: vehicleId) { (response) in
                 switch response {
                 case .success(let data):
                     dealerIds.insert(data.vehicleInfo.dealerId)
+                    dealerVehicleDictionary[data.vehicleInfo.dealerId]?.append(data.vehicleInfo.vehicleId)
                     allVehicleData.append(data.vehicleInfo)
                     dispatchGroup.leave()
                     break
@@ -77,7 +95,7 @@ struct NetworkingManager {
         
         dispatchGroup.notify(queue: .global()) {
             print("All vehicle data saved")
-            self.triggerDealershipInfoRequestsWith(datasetId: datasetId, dealershipIds: dealerIds) { (response) in
+            self.triggerDealershipInfoRequestsWith(datasetId: datasetId, dealershipIds: dealerIds, dealerVehicleDictionary: dealerVehicleDictionary) { (response) in
                 switch response {
                 case .success(let allDealershipData):
                     completionHandler(.success(data: (allVehicleData, allDealershipData)))
@@ -90,8 +108,10 @@ struct NetworkingManager {
         }
     }
     
+    //LUCAS - use dictionary isntead of set to keep reference to vehicles per dealer id - check coderpad/notepad
+    
     //in the notify group - we pass it back
-    func triggerDealershipInfoRequestsWith(datasetId: String, dealershipIds: Set<Int>, completionHandler: @escaping (NetworkResponse<[DealershipInfo]>) -> ()) {
+    func triggerDealershipInfoRequestsWith(datasetId: String, dealershipIds: Set<Int>, dealerVehicleDictionary: [Int: [Int]], completionHandler: @escaping (NetworkResponse<[DealershipInfo]>) -> ()) {
         let dispatchGroup = DispatchGroup()
         var allDealershipData: [DealershipInfo] = []
         dealershipIds.forEach { (dealershipId) in
@@ -117,28 +137,28 @@ struct NetworkingManager {
     }
 
     private func getDatasetId(completionHandler: @escaping (NetworkResponse<String>) -> ()) {
-        guard let url = URL(string: datasetIdURL) else {
+        guard let url = URL(string: "\(rootAPIURL)datasetId") else {
             print("Unable to create URL in getDatasetId method")
-            completionHandler(.failure(error:"Unable to create URL in getDatasetId method"))
+            completionHandler(.failure(error: NetworkError.couldNotCreateURL))
             return
         }
 
         let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
             guard let response = response else {
                 print("getDatasetId method received no response from the server")
-                completionHandler(.failure(error: "getDatasetId method received no response from the server"))
+                completionHandler(.failure(error: NetworkError.noResponse))
                 return
             }
 
             guard response.isSuccessful else {
                 print("getDatasetId method was unsuccessful with response - \(response)")
-                completionHandler(.failure(error: "getDatasetId method was unsuccessful with response - \(response)"))
+                completionHandler(.failure(error: NetworkError.notSuccessful))
                 return
             }
 
             guard let data = data else {
                 print("getDatasetId method received no data from the server")
-                completionHandler(.failure(error: "getDatasetId method received no data from the server"))
+                completionHandler(.failure(error: NetworkError.noData))
                 return
             }
 
@@ -147,7 +167,7 @@ struct NetworkingManager {
                 completionHandler(.success(data: dataset.id))
             } catch let decodingError {
                 print(decodingError)
-                completionHandler(.failure(error: "failed to decode dataset with decoding error - \(decodingError)"))
+                completionHandler(.failure(error: decodingError))
             }
         }
 
@@ -155,28 +175,28 @@ struct NetworkingManager {
     }
     
     private func getVehicleList(datasetId: String, completionHandler: @escaping (NetworkResponse<(dataset: String, vehicleIds: [Int])>) -> ()) {
-        guard let url = URL(string: "\(vehicleListURL)\(datasetId)/vehicles") else {
+        guard let url = URL(string: "\(rootAPIURL)\(datasetId)/vehicles") else {
             print("Unable to create URL in getVehicleList method")
-            completionHandler(.failure(error: "Unable to create URL in getVehicleList method"))
+            completionHandler(.failure(error: NetworkError.couldNotCreateURL))
             return
         }
         
         let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
             guard let response = response else {
                 print("getVehicleList method received no response from the server")
-                completionHandler(.failure(error: "getVehicleList method received no response from the server"))
+                completionHandler(.failure(error: NetworkError.noResponse))
                 return
             }
             
             guard response.isSuccessful else {
                 print("getVehicleList method with datasetId - \(datasetId) was unsuccessful with response - \(response)")
-                completionHandler(.failure(error: "getVehicleList method with datasetId - \(datasetId) was unsuccessful with response - \(response)"))
+                completionHandler(.failure(error: NetworkError.notSuccessful))
                 return
             }
 
             guard let data = data else {
                 print("getVehicleList method with datasetId - \(datasetId) received no data from the server")
-                completionHandler(.failure(error: "getVehicleList method with datasetId - \(datasetId) received no data from the server"))
+                completionHandler(.failure(error: NetworkError.noData))
                 return
             }
 
@@ -185,7 +205,7 @@ struct NetworkingManager {
                 completionHandler(.success(data: (datasetId, vehicleList.ids)))
             } catch let decodingError {
                 print(decodingError)
-                completionHandler(.failure(error: "failed to decode dataset with decoding error - \(decodingError)"))
+                completionHandler(.failure(error:decodingError))
             }
         }
 
@@ -193,28 +213,28 @@ struct NetworkingManager {
     }
     
     private func getVehicleInfo(datasetId: String, vehicleId: Int, completionHandler: @escaping (NetworkResponse<(datasetId: String, vehicleInfo: VehicleInfo)>) -> ()) {
-        guard let url = URL(string: "\(vehicleListURL)\(datasetId)/vehicles/\(vehicleId)") else {
+        guard let url = URL(string: "\(rootAPIURL)\(datasetId)/vehicles/\(vehicleId)") else {
             print("Unable to create URL in getVehicleInfo method")
-            completionHandler(.failure(error: "Unable to create URL in getVehicleInfo method"))
+            completionHandler(.failure(error: NetworkError.couldNotCreateURL))
             return
         }
 
         let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
             guard let response = response else {
                 print("getVehicleInfo method received no response from the server")
-                completionHandler(.failure(error: "getVehicleInfo method received no response from the server"))
+                completionHandler(.failure(error: NetworkError.noResponse))
                 return
             }
 
             guard response.isSuccessful else {
                 print("getVehicleInfo method with datasetId - \(datasetId) was unsuccessful with response - \(response)")
-                completionHandler(.failure(error: "getVehicleInfo method with datasetId - \(datasetId) was unsuccessful with response - \(response)"))
+                completionHandler(.failure(error: NetworkError.notSuccessful))
                 return
             }
 
             guard let data = data else {
                 print("getVehicleInfo method with datasetId - \(datasetId) received no data from the server")
-                completionHandler(.failure(error: "getVehicleInfo method with datasetId - \(datasetId) received no data from the server"))
+                completionHandler(.failure(error: NetworkError.noData))
                 return
             }
             
@@ -223,7 +243,7 @@ struct NetworkingManager {
                 completionHandler(.success(data: (datasetId: datasetId, vehicleInfo: vehicleInfo)))
             } catch let decodingError {
                 print(decodingError)
-                completionHandler(.failure(error: "failed to decode dataset with decoding error - \(decodingError)"))
+                completionHandler(.failure(error: decodingError))
             }
         }
 
@@ -231,28 +251,28 @@ struct NetworkingManager {
     }
     
     private func getDealershipInfo(datasetId: String, dealerId: Int, completionHandler: @escaping (NetworkResponse<DealershipInfo>) -> ()) {
-        guard let url = URL(string: "\(vehicleListURL)\(datasetId)/dealers/\(dealerId)") else {
+        guard let url = URL(string: "\(rootAPIURL)\(datasetId)/dealers/\(dealerId)") else {
             print("Unable to create URL in getDealershipInfo method")
-            completionHandler(.failure(error: "Unable to create URL in getDealershipInfo method"))
+            completionHandler(.failure(error: NetworkError.couldNotCreateURL))
             return
         }
 
         let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
             guard let response = response else {
                 print("getDealershipInfo method received no response from the server")
-                completionHandler(.failure(error: "getDealershipInfo method received no response from the server"))
+                completionHandler(.failure(error: NetworkError.noResponse))
                 return
             }
 
             guard response.isSuccessful else {
                 print("getDealershipInfo method with datasetId - \(datasetId) was unsuccessful with response - \(response)")
-                completionHandler(.failure(error: "getDealershipInfo method with datasetId - \(datasetId) was unsuccessful with response - \(response)"))
+                completionHandler(.failure(error: NetworkError.notSuccessful))
                 return
             }
 
             guard let data = data else {
                 print("getDealershipInfo method with datasetId - \(datasetId) received no data from the server")
-                completionHandler(.failure(error: "getDealershipInfo method with datasetId - \(datasetId) received no data from the server"))
+                completionHandler(.failure(error: NetworkError.noData))
                 return
             }
             
@@ -261,7 +281,7 @@ struct NetworkingManager {
                 completionHandler(.success(data: dealershipInfo))
             } catch let decodingError {
                 print(decodingError)
-                completionHandler(.failure(error: "failed to decode dataset with decoding error - \(decodingError)"))
+                completionHandler(.failure(error: decodingError))
             }
         }
 

@@ -22,7 +22,6 @@
 		378E98CA23F097BD00FD7BD2 /* VehicleTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 378E98C923F097BA00FD7BD2 /* VehicleTableViewController.swift */; };
 		37C98E3B23F0A5B000732EAE /* DealershipTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C98E3A23F0A5B000732EAE /* DealershipTableViewCell.swift */; };
 		37C98E3D23F0AB4E00732EAE /* VehicleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C98E3C23F0AB4E00732EAE /* VehicleTableViewCell.swift */; };
-		37C98E3F23F0E16100732EAE /* CodingUserInfoKey+AutomotiveProgrammingChallenge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C98E3E23F0E16100732EAE /* CodingUserInfoKey+AutomotiveProgrammingChallenge.swift */; };
 		37C98E4D23F4A4C500732EAE /* DataProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C98E4C23F4A4C500732EAE /* DataProvider.swift */; };
 		37C98E4F23F4B83700732EAE /* PersistedDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37C98E4E23F4B83700732EAE /* PersistedDataManager.swift */; };
 /* End PBXBuildFile section */
@@ -66,7 +65,6 @@
 		378E98C923F097BA00FD7BD2 /* VehicleTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VehicleTableViewController.swift; sourceTree = "<group>"; };
 		37C98E3A23F0A5B000732EAE /* DealershipTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DealershipTableViewCell.swift; sourceTree = "<group>"; };
 		37C98E3C23F0AB4E00732EAE /* VehicleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VehicleTableViewCell.swift; sourceTree = "<group>"; };
-		37C98E3E23F0E16100732EAE /* CodingUserInfoKey+AutomotiveProgrammingChallenge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CodingUserInfoKey+AutomotiveProgrammingChallenge.swift"; sourceTree = "<group>"; };
 		37C98E4C23F4A4C500732EAE /* DataProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataProvider.swift; sourceTree = "<group>"; };
 		37C98E4E23F4B83700732EAE /* PersistedDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistedDataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -173,7 +171,6 @@
 			isa = PBXGroup;
 			children = (
 				378E98BD23EF353700FD7BD2 /* URLResponse+AutomotiveProgrammingChallenge.swift */,
-				37C98E3E23F0E16100732EAE /* CodingUserInfoKey+AutomotiveProgrammingChallenge.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -337,7 +334,6 @@
 				37C98E3D23F0AB4E00732EAE /* VehicleTableViewCell.swift in Sources */,
 				378E98BE23EF353700FD7BD2 /* URLResponse+AutomotiveProgrammingChallenge.swift in Sources */,
 				378E98CA23F097BD00FD7BD2 /* VehicleTableViewController.swift in Sources */,
-				37C98E3F23F0E16100732EAE /* CodingUserInfoKey+AutomotiveProgrammingChallenge.swift in Sources */,
 				37C98E4F23F4B83700732EAE /* PersistedDataManager.swift in Sources */,
 				37C98E4D23F4A4C500732EAE /* DataProvider.swift in Sources */,
 				378E98B923EF32E000FD7BD2 /* NetworkingManager.swift in Sources */,

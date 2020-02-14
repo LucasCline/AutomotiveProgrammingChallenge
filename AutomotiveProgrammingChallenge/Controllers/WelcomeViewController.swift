@@ -13,14 +13,17 @@ class WelcomeViewController: UIViewController {
     
     @IBAction func letsBeginButtonTapped(_ sender: Any) {
         getAllAPIData()
+        //LUCAS - disable button on press
+        //re-enable on fail
     }
     
     private func getAllAPIData() {
-        DataProvider().getAllAPIData { (response) in
+        DataProvider.getAllAPIData { (response) in
             switch response {
             case .success(let data):
                 //navigate to the next screen
                 //LUCAS -- print data or something? dont really need it here
+                
                 print("Downloading data successful - found \(data.allDealerships.count) dealerships and \(data.allVehicles.count) vehicles")
                 DispatchQueue.main.async {
                     self.performSegue(withIdentifier: "DealershipSegue", sender: self)
