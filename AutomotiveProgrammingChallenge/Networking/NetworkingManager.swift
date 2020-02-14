@@ -15,22 +15,23 @@ enum NetworkResponse<T: Any> {
     case success(data: T)
 }
 
-enum NetworkError: Error {
+enum NetworkError: LocalizedError {
     case noResponse
     case noData
     case notSuccessful
     case couldNotCreateURL
     
-    var localizedDescription: String {
+    //LUCAS - these are supposed to be for displaying to the user? better way to do this? 
+    var errorDescription: String? {
         switch self {
         case .noResponse:
-            return "No response received from the server."
+            return NSLocalizedString("No response received from the server.", comment: "")
         case .noData:
-            return "No data found in the request."
+            return NSLocalizedString("No data found in the request.", comment: "")
         case .notSuccessful:
-            return "Request not successful."
+            return NSLocalizedString("Request not successful.", comment: "")
         case .couldNotCreateURL:
-            return "Unable to create URL."
+            return NSLocalizedString("Unable to create URL.", comment: "")
         }
     }
 }
@@ -288,6 +289,3 @@ struct NetworkingManager {
         task.resume()
     }
 }
-
-//LUCAS - dont leave this here
-extension String: Error { }

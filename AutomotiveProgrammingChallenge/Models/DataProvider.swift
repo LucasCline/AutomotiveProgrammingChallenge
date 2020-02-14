@@ -8,6 +8,17 @@
 
 import Foundation
 
+enum DataProviderError: LocalizedError {
+    case noDataFoundOnDisk
+    
+    var errorDescription: String? {
+        switch self {
+        case .noDataFoundOnDisk:
+            return NSLocalizedString("No data found persisted on disk", comment: "")//"No data found persisted on disk"
+        }
+    }
+}
+
 struct DataProvider {
     //this method's completion handler contains all the vehicle data
     static func getVehicleData(completionHandler: @escaping (NetworkResponse<[VehicleInfo]>) -> ()) {
@@ -45,8 +56,8 @@ struct DataProvider {
                 completionHandler(.success(data: data))
                 print("persisted data found - no need to make network call") //LUCAS - DEbug statement
                 break
-            case .failure(let error):
-                print(error)
+            case .failure(let error): //LUCAS - dont really need this error - we arent going to display it to the user, remove "let error" or just print anyways?
+                print(error.localizedDescription)
                 print("No persisted data found - need to make network call") //LUCAS - DEbug statement
                 self.getDataFromServer(completionHandler: completionHandler)
                 break
@@ -63,12 +74,12 @@ struct DataProvider {
             let vehicles = vehiclePDM.retrieveDataFromDisk()
             
             guard dealerships.count > 0 else {
-                completionHandler(.failure(error: "No dealership data found persisted on disk"))
+                completionHandler(.failure(error: DataProviderError.noDataFoundOnDisk))
                 return
             }
             
             guard vehicles.count > 0 else {
-                completionHandler(.failure(error: ""))
+                completionHandler(.failure(error: DataProviderError.noDataFoundOnDisk))
                 return
             }
             
