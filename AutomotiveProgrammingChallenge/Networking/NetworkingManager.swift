@@ -110,8 +110,6 @@ struct NetworkingManager {
         }
     }
     
-    //LUCAS - use dictionary isntead of set to keep reference to vehicles per dealer id - check coderpad/notepad
-    
     //in the notify group - we pass it back
     func triggerDealershipInfoRequestsWith(datasetId: String, dealerVehicleDictionary: [Int: [VehicleInfo]], completionHandler: @escaping (NetworkResponse<[DealershipInfo]>) -> ()) {
         let dispatchGroup = DispatchGroup()

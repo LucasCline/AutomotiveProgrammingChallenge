@@ -18,27 +18,9 @@ class VehicleTableViewController: UIViewController {
         vehicleTableView.delegate = self
         vehicleTableView.dataSource = self
         
-//        fetchVehicleData()
+        //LUCAS - if no data is found - maybe display a popup saying there was no data found so the user doesnt just see a blank screen
+        
     }
-    
-//    func fetchVehicleData() {
-//        DataProvider.getVehicleData { response in
-//            switch response {
-//            case .success(let allVehicles):
-//                //LUCAS - remove this filter - since we added vehicles to dealers
-//                dea
-//                //self.newVehicles = allVehicles.filter { $0.dealerId == self.dealerId }
-//                DispatchQueue.main.async {
-//                    self.vehicleTableView.reloadData()
-//                }
-//                break
-//            case .failure(let error):
-//                print(error)
-//                //LUCAS - handle no data found
-//                break
-//            }
-//        }
-//    }
 }
 
 extension VehicleTableViewController: UITableViewDelegate {
