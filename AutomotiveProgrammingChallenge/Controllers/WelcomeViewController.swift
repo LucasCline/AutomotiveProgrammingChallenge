@@ -36,17 +36,8 @@ class WelcomeViewController: UIViewController {
         getAllAPIData()
     }
     
-    //LUCAS - maybe this comment is stupid?
-    //This method attempts to retrieve dealership and vehicle data. If successful, we navigate to the next screen, passing the dealership data along. If unsuccessful, we display an error to the user.
     private func getAllAPIData() {
         DataProvider.getAllAPIData { (response) in
-            DispatchQueue.main.async {
-                self.activityIndicator.isHidden = true
-                self.activityIndicator.stopAnimating()
-                self.fetchDealershipAndVehicleDataButton.isEnabled = true
-                self.fetchDealershipAndVehicleDataButton.setTitle("Get Dealership and Vehicle Data", for: .normal)
-            }
-
             switch response {
             case .success(let dealerships):
                 self.dealershipsForSegue = dealerships
@@ -57,6 +48,12 @@ class WelcomeViewController: UIViewController {
             case .failure(let error):
                 self.displayAlertForRequestFailureWith(error: error)
                 break
+            }
+            DispatchQueue.main.async {
+                self.activityIndicator.isHidden = true
+                self.activityIndicator.stopAnimating()
+                self.fetchDealershipAndVehicleDataButton.isEnabled = true
+                self.fetchDealershipAndVehicleDataButton.setTitle("Get Dealership and Vehicle Data", for: .normal)
             }
         }
     }
