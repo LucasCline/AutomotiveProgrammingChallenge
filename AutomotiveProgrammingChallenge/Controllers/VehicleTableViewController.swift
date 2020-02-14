@@ -11,15 +11,28 @@ import UIKit
 //LUCAS - make rows not selectable or at least deselect them in didselect
 class VehicleTableViewController: UIViewController {
     @IBOutlet weak var vehicleTableView: UITableView!
-    var dealership: DealershipInfo?
+    var vehicles: [VehicleInfo] = []
     override func viewDidLoad() {
         super.viewDidLoad()
         
         vehicleTableView.delegate = self
         vehicleTableView.dataSource = self
         
-        //LUCAS - if no data is found - maybe display a popup saying there was no data found so the user doesnt just see a blank screen
-        
+        if vehicles.count == 0 {
+            DispatchQueue.main.async {
+                self.displayAlertForNoVehicleDataFound()
+            }
+        }
+    }
+    
+    private func displayAlertForNoVehicleDataFound() {
+        let alert = UIAlertController(title: "Vehicle Data Not Found", message: "There was no vehicle data found for the given Dataset ID.", preferredStyle: .alert)
+
+        alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
+
+        DispatchQueue.main.async {
+            self.present(alert, animated: true)
+        }
     }
 }
 
@@ -31,7 +44,7 @@ extension VehicleTableViewController: UITableViewDelegate {
 
 extension VehicleTableViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dealership?.vehicles.count ?? 0
+        return vehicles.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -40,10 +53,7 @@ extension VehicleTableViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        guard let vehicle = dealership?.vehicles[indexPath.row] else {
-            print("No vehicle information found -- returning a blank UITableViewCell")
-            return UITableViewCell()
-        }
+        let vehicle = vehicles[indexPath.row]
 
         cell.yearMakeModel.text = "\(vehicle.year) \(vehicle.make) \(vehicle.model)"
         cell.vehicleId.text = "Vehicle ID: \(vehicle.vehicleId)"

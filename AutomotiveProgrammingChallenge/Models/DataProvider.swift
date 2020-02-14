@@ -99,7 +99,7 @@ struct DataProvider {
                 dealershipPDM.store(data: data.allDealerships) //LUCAS - do we need to store both? is there any reason to hang on to vehicles if we already have them in dealerships - like may we need to retrieve them without caring about their dealership relationship?
                 vehiclePDM.store(data: data.allVehicles)
                 completionHandler(.success(data: data))
-                print(data)
+                //print(data)
                 break
             case .failure(let error):
                 print(error)

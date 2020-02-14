@@ -20,7 +20,11 @@ class DealershipTableViewController: UIViewController {
         dealershipTableView.delegate = self
         dealershipTableView.dataSource = self
         
-        //LUCAS - if no data is found - maybe display a popup saying there was no data found so the user doesnt just see a blank screen
+        if dealerships.count == 0 {
+            DispatchQueue.main.async {
+                self.displayAlertForNoDealershipDataFound()
+            }
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -28,7 +32,17 @@ class DealershipTableViewController: UIViewController {
             return
         }
         
-        destinationVC.dealership = dealershipForSegue
+        destinationVC.vehicles = dealershipForSegue?.vehicles ?? []
+    }
+    
+    private func displayAlertForNoDealershipDataFound() {
+        let alert = UIAlertController(title: "Dealership Data Not Found", message: "There was no dealership data found for the given Dataset ID.", preferredStyle: .alert)
+
+        alert.addAction(UIAlertAction(title: "Okay", style: .default, handler: nil))
+
+        DispatchQueue.main.async {
+            self.present(alert, animated: true)
+        }
     }
 }
 

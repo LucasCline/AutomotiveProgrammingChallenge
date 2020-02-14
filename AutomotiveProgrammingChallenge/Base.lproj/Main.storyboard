@@ -30,24 +30,31 @@
                                     <action selector="letsBeginButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="N6I-UY-c3R"/>
                                 </connections>
                             </button>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="kmD-Vz-LW1">
+                                <rect key="frame" x="188.5" y="456.5" width="37" height="37"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstItem="Bua-LV-F3e" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.15" id="7JE-44-VsF"/>
+                            <constraint firstItem="kmD-Vz-LW1" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="Ew8-fK-ZAJ"/>
                             <constraint firstItem="Bua-LV-F3e" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="MGs-NS-Ccs"/>
                             <constraint firstItem="Bua-LV-F3e" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.8" id="SZn-gS-Wi6"/>
+                            <constraint firstItem="kmD-Vz-LW1" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="iea-Z8-d8s"/>
                             <constraint firstItem="Bua-LV-F3e" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="nJH-nv-BSN"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="d7G-GN-xdJ"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="kmD-Vz-LW1" id="azW-q4-gh2"/>
+                        <outlet property="letsBeginButton" destination="Bua-LV-F3e" id="MIf-I4-43f"/>
                         <segue destination="nfR-bF-rzE" kind="show" identifier="DealershipSegue" id="IZg-gZ-YR3"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1145" y="117"/>
+            <point key="canvasLocation" x="1144.9275362318842" y="116.51785714285714"/>
         </scene>
         <!--Dealership Table View Controller-->
         <scene sceneID="oHx-8P-VRm">
