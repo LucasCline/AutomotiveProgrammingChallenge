@@ -11,34 +11,34 @@ import UIKit
 //LUCAS - make rows not selectable or at least deselect them in didselect
 class VehicleTableViewController: UIViewController {
     @IBOutlet weak var vehicleTableView: UITableView!
-    var newVehicles: [VehicleInfo] = []
-    var dealerId: Int?
+    var dealership: DealershipInfo?
     override func viewDidLoad() {
         super.viewDidLoad()
         
         vehicleTableView.delegate = self
         vehicleTableView.dataSource = self
         
-        fetchVehicleData()
+//        fetchVehicleData()
     }
     
-    func fetchVehicleData() {
-        DataProvider.getVehicleData { response in
-            switch response {
-            case .success(let allVehicles):
-                //LUCAS - remove this filter - since we added vehicles to dealers
-                self.newVehicles = allVehicles.filter { $0.dealerId == self.dealerId }
-                DispatchQueue.main.async {
-                    self.vehicleTableView.reloadData()
-                }
-                break
-            case .failure(let error):
-                print(error)
-                //LUCAS - handle no data found 
-                break
-            }
-        }
-    }
+//    func fetchVehicleData() {
+//        DataProvider.getVehicleData { response in
+//            switch response {
+//            case .success(let allVehicles):
+//                //LUCAS - remove this filter - since we added vehicles to dealers
+//                dea
+//                //self.newVehicles = allVehicles.filter { $0.dealerId == self.dealerId }
+//                DispatchQueue.main.async {
+//                    self.vehicleTableView.reloadData()
+//                }
+//                break
+//            case .failure(let error):
+//                print(error)
+//                //LUCAS - handle no data found
+//                break
+//            }
+//        }
+//    }
 }
 
 extension VehicleTableViewController: UITableViewDelegate {
@@ -49,7 +49,7 @@ extension VehicleTableViewController: UITableViewDelegate {
 
 extension VehicleTableViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return newVehicles.count
+        return dealership?.vehicles.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -58,7 +58,10 @@ extension VehicleTableViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        let vehicle = newVehicles[indexPath.row]
+        guard let vehicle = dealership?.vehicles[indexPath.row] else {
+            print("No vehicle information found -- returning a blank UITableViewCell")
+            return UITableViewCell()
+        }
 
         cell.yearMakeModel.text = "\(vehicle.year) \(vehicle.make) \(vehicle.model)"
         cell.vehicleId.text = "Vehicle ID: \(vehicle.vehicleId)"

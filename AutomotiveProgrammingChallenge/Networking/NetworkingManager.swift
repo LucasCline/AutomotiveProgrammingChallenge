@@ -73,16 +73,17 @@ struct NetworkingManager {
         
     func triggerVehicleInfoRequestsWith(datasetId: String, vehicleIds: [Int], completionHandler: @escaping AllAPIDataResponse) {
         let dispatchGroup = DispatchGroup()
-        var dealerIds: Set<Int> = []
         var allVehicleData: [VehicleInfo] = []
-        var dealerVehicleDictionary: [Int: [Int]] = [:]
+        var dealerVehicleDictionary: [Int: [VehicleInfo]] = [:]
         vehicleIds.forEach { (vehicleId) in
             dispatchGroup.enter()
             self.getVehicleInfo(datasetId: datasetId, vehicleId: vehicleId) { (response) in
                 switch response {
                 case .success(let data):
-                    dealerIds.insert(data.vehicleInfo.dealerId)
-                    dealerVehicleDictionary[data.vehicleInfo.dealerId]?.append(data.vehicleInfo.vehicleId)
+                    if dealerVehicleDictionary[data.vehicleInfo.dealerId] == nil {
+                        dealerVehicleDictionary[data.vehicleInfo.dealerId] = []
+                    }
+                    dealerVehicleDictionary[data.vehicleInfo.dealerId]?.append(data.vehicleInfo)
                     allVehicleData.append(data.vehicleInfo)
                     dispatchGroup.leave()
                     break
@@ -96,7 +97,7 @@ struct NetworkingManager {
         
         dispatchGroup.notify(queue: .global()) {
             print("All vehicle data saved")
-            self.triggerDealershipInfoRequestsWith(datasetId: datasetId, dealershipIds: dealerIds, dealerVehicleDictionary: dealerVehicleDictionary) { (response) in
+            self.triggerDealershipInfoRequestsWith(datasetId: datasetId, dealerVehicleDictionary: dealerVehicleDictionary) { (response) in
                 switch response {
                 case .success(let allDealershipData):
                     completionHandler(.success(data: (allVehicleData, allDealershipData)))
@@ -112,14 +113,16 @@ struct NetworkingManager {
     //LUCAS - use dictionary isntead of set to keep reference to vehicles per dealer id - check coderpad/notepad
     
     //in the notify group - we pass it back
-    func triggerDealershipInfoRequestsWith(datasetId: String, dealershipIds: Set<Int>, dealerVehicleDictionary: [Int: [Int]], completionHandler: @escaping (NetworkResponse<[DealershipInfo]>) -> ()) {
+    func triggerDealershipInfoRequestsWith(datasetId: String, dealerVehicleDictionary: [Int: [VehicleInfo]], completionHandler: @escaping (NetworkResponse<[DealershipInfo]>) -> ()) {
         let dispatchGroup = DispatchGroup()
         var allDealershipData: [DealershipInfo] = []
-        dealershipIds.forEach { (dealershipId) in
+        
+        dealerVehicleDictionary.keys.forEach { (dealershipId) in
             dispatchGroup.enter()
             self.getDealershipInfo(datasetId: datasetId, dealerId: dealershipId) { (response) in
                 switch response {
-                case .success(let dealershipInfo):
+                case .success(var dealershipInfo):
+                    dealershipInfo.vehicles = dealerVehicleDictionary[dealershipInfo.id] ?? []
                     allDealershipData.append(dealershipInfo)
                     dispatchGroup.leave()
                     break

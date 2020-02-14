@@ -10,11 +10,20 @@ import UIKit
 
 class WelcomeViewController: UIViewController {
     @IBOutlet weak var letsBeginButton: UIButton!
+    private var dealerships: [DealershipInfo] = []
     
     @IBAction func letsBeginButtonTapped(_ sender: Any) {
         getAllAPIData()
-        //LUCAS - disable button on press
-        //re-enable on fail
+        letsBeginButton.isEnabled = false
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let destinationVC = segue.destination as? DealershipTableViewController else {
+            print("Segue destination is not DealershipTableViewController - something went wrong.")
+            return
+        }
+        
+        destinationVC.dealerships = dealerships
     }
     
     private func getAllAPIData() {
@@ -22,15 +31,14 @@ class WelcomeViewController: UIViewController {
             switch response {
             case .success(let data):
                 //navigate to the next screen
-                //LUCAS -- print data or something? dont really need it here
-                
-                print("Downloading data successful - found \(data.allDealerships.count) dealerships and \(data.allVehicles.count) vehicles")
+                self.dealerships = data.allDealerships
                 DispatchQueue.main.async {
                     self.performSegue(withIdentifier: "DealershipSegue", sender: self)
                 }
                 break
             case .failure(let error):
                 print(error)
+                self.letsBeginButton.isEnabled = true
                 //LUCAS - Handle no data found
                 //LUCAS - display error message and ask the user to try again
                 break

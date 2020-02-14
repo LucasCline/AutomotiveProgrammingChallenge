@@ -10,39 +10,17 @@ import UIKit
 
 class DealershipTableViewController: UIViewController {
     @IBOutlet weak var dealershipTableView: UITableView!
-    private var dealerIdForSegue: Int?
-    private var dealerIds: Set<Int> = []
-    
     var dealerships: [DealershipInfo] = []
-
+    
+    private var dealershipForSegue: DealershipInfo?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         dealershipTableView.delegate = self
         dealershipTableView.dataSource = self
         
-        //LUCAS - pass dealerships in segue
-        //if dealerships.count == 0 {
-        //fetch
-        //}
-        fetchDealershipData()
-    }
-    
-    private func fetchDealershipData() {
-        DataProvider.getDealershipData { (response) in
-            switch response {
-            case .success(let dealerships):
-                self.dealerships = dealerships
-                DispatchQueue.main.async {
-                    self.dealershipTableView.reloadData()
-                }
-                break
-            case .failure(let error):
-                print(error)
-                //LUCAS - Handle no data found
-                break
-            }
-        }
+        //LUCAS - if no data is found - maybe display a popup saying there was no data found so the user doesnt just see a blank screen
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -50,14 +28,13 @@ class DealershipTableViewController: UIViewController {
             return
         }
         
-        destinationVC.dealerId = dealerIdForSegue
+        destinationVC.dealership = dealershipForSegue
     }
 }
 
 extension DealershipTableViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let dealerId = dealerships[indexPath.row].id
-        dealerIdForSegue = dealerId
+        dealershipForSegue = dealerships[indexPath.row]
         performSegue(withIdentifier: "VehicleSegue", sender: self)
         tableView.deselectRow(at: indexPath, animated: true)
     }
