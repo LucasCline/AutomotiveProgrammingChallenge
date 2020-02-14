@@ -9,7 +9,7 @@
 import UIKit
 
 class WelcomeViewController: UIViewController {
-    @IBOutlet weak var letsBeginButton: UIButton!
+    @IBOutlet weak var fetchDealershipAndVehicleDataButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     private var dealershipsForSegue: [DealershipInfo] = []
     
@@ -30,19 +30,21 @@ class WelcomeViewController: UIViewController {
     @IBAction func letsBeginButtonTapped(_ sender: Any) {
         self.activityIndicator.isHidden = false
         self.activityIndicator.startAnimating()
-        letsBeginButton.isEnabled = false
-        letsBeginButton.setTitle("Loading...", for: .normal)
+        fetchDealershipAndVehicleDataButton.isEnabled = false
+        fetchDealershipAndVehicleDataButton.setTitle("Loading...", for: .normal)
         
         getAllAPIData()
     }
     
+    //LUCAS - maybe this comment is stupid?
+    //This method attempts to retrieve dealership and vehicle data. If successful, we navigate to the next screen, passing the dealership data along. If unsuccessful, we display an error to the user.
     private func getAllAPIData() {
         DataProvider.getAllAPIData { (response) in
             DispatchQueue.main.async {
                 self.activityIndicator.isHidden = true
                 self.activityIndicator.stopAnimating()
-                self.letsBeginButton.isEnabled = true
-                self.letsBeginButton.setTitle("Get Dealership and Vehicle Data", for: .normal)
+                self.fetchDealershipAndVehicleDataButton.isEnabled = true
+                self.fetchDealershipAndVehicleDataButton.setTitle("Get Dealership and Vehicle Data", for: .normal)
             }
 
             switch response {

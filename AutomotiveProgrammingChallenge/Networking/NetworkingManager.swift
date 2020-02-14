@@ -36,12 +36,11 @@ enum NetworkError: LocalizedError {
 }
 
 struct NetworkingManager {
-    //call this something like triggerDownloadOfDealershipAndVehicleData()
     func triggerDownloadOfAllAPIData(completionHandler: @escaping (NetworkResponse<[DealershipInfo]>) -> ()) {
         triggerDatasetRequest(completionHandler: completionHandler)
     }
     
-    func triggerDatasetRequest(completionHandler: @escaping (NetworkResponse<[DealershipInfo]>) -> ()) {
+    private func triggerDatasetRequest(completionHandler: @escaping (NetworkResponse<[DealershipInfo]>) -> ()) {
         getDatasetId { (response) in
             switch response {
             case .success(let datasetId):
@@ -54,7 +53,7 @@ struct NetworkingManager {
         }
     }
         
-    func triggerVehicleListRequestWith(datasetId: String, completionHandler: @escaping (NetworkResponse<[DealershipInfo]>) -> ()) {
+    private func triggerVehicleListRequestWith(datasetId: String, completionHandler: @escaping (NetworkResponse<[DealershipInfo]>) -> ()) {
         getVehicleList(datasetId: datasetId) { (response) in
             switch response {
             case .success(let data):
@@ -67,10 +66,10 @@ struct NetworkingManager {
         }
     }
         
-    func triggerVehicleInfoRequestsWith(datasetId: String, vehicleIds: [Int], completionHandler: @escaping (NetworkResponse<[DealershipInfo]>) -> ()) {
+    private func triggerVehicleInfoRequestsWith(datasetId: String, vehicleIds: [Int], completionHandler: @escaping (NetworkResponse<[DealershipInfo]>) -> ()) {
         let dispatchGroup = DispatchGroup()
-        var allVehicleData: [VehicleInfo] = []
         var dealerVehicleDictionary: [Int: [VehicleInfo]] = [:]
+        
         vehicleIds.forEach { (vehicleId) in
             dispatchGroup.enter()
             self.getVehicleInfo(datasetId: datasetId, vehicleId: vehicleId) { (response) in
@@ -80,7 +79,6 @@ struct NetworkingManager {
                         dealerVehicleDictionary[data.vehicleInfo.dealerId] = []
                     }
                     dealerVehicleDictionary[data.vehicleInfo.dealerId]?.append(data.vehicleInfo)
-                    allVehicleData.append(data.vehicleInfo)
                     dispatchGroup.leave()
                     break
                 case .failure(let error):
@@ -91,7 +89,7 @@ struct NetworkingManager {
             }
         }
         
-        //This block gets executed when all of the vehicle info has been saved
+        //This block gets executed after all of the vehicle info has been saved
         dispatchGroup.notify(queue: .global()) {
             self.triggerDealershipInfoRequestsWith(datasetId: datasetId, dealerVehicleDictionary: dealerVehicleDictionary) { (response) in
                 switch response {
@@ -106,8 +104,7 @@ struct NetworkingManager {
         }
     }
     
-    //in the notify group - we pass it back
-    func triggerDealershipInfoRequestsWith(datasetId: String, dealerVehicleDictionary: [Int: [VehicleInfo]], completionHandler: @escaping (NetworkResponse<[DealershipInfo]>) -> ()) {
+    private func triggerDealershipInfoRequestsWith(datasetId: String, dealerVehicleDictionary: [Int: [VehicleInfo]], completionHandler: @escaping (NetworkResponse<[DealershipInfo]>) -> ()) {
         let dispatchGroup = DispatchGroup()
         var allDealershipData: [DealershipInfo] = []
         
@@ -128,7 +125,7 @@ struct NetworkingManager {
             }
         }
         
-        //This block gets executed when all of the dealership info has been saved
+        //This block gets executed after all of the dealership info has been saved
         dispatchGroup.notify(queue: .global()) {
             completionHandler(.success(data: allDealershipData))
         }

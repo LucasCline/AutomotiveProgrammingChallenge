@@ -119,6 +119,7 @@
 			children = (
 				378E98C123EF5C6E00FD7BD2 /* Controllers */,
 				378E98BB23EF351900FD7BD2 /* Models */,
+				37C98E5023F6ED4300732EAE /* Data Management */,
 				378E98BA23EF350800FD7BD2 /* Networking */,
 				378E988523EF325100FD7BD2 /* AppDelegate.swift */,
 				378E988723EF325100FD7BD2 /* SceneDelegate.swift */,
@@ -161,8 +162,6 @@
 			children = (
 				378E98BC23EF351D00FD7BD2 /* Extensions */,
 				378E98BF23EF387C00FD7BD2 /* VehicleInfo.swift */,
-				37C98E4C23F4A4C500732EAE /* DataProvider.swift */,
-				37C98E4E23F4B83700732EAE /* PersistedDataManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -193,6 +192,15 @@
 				37C98E3C23F0AB4E00732EAE /* VehicleTableViewCell.swift */,
 			);
 			path = TableViewCells;
+			sourceTree = "<group>";
+		};
+		37C98E5023F6ED4300732EAE /* Data Management */ = {
+			isa = PBXGroup;
+			children = (
+				37C98E4C23F4A4C500732EAE /* DataProvider.swift */,
+				37C98E4E23F4B83700732EAE /* PersistedDataManager.swift */,
+			);
+			path = "Data Management";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

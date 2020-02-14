@@ -14,27 +14,13 @@ enum DataProviderError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .noDataFoundOnDisk:
-            return NSLocalizedString("No data found persisted on disk", comment: "")//"No data found persisted on disk"
+            return "No data found persisted on disk"
         }
     }
 }
 
 struct DataProvider {
-    //this method's completion handler contains all the dealership data
-    static func getDealershipData(completionHandler: @escaping (NetworkResponse<[DealershipInfo]>) -> ()) {
-        getAllAPIData { (response) in
-            switch response {
-            case .success(let dealerships):
-                completionHandler(.success(data: dealerships))
-                break
-            case .failure(let error):
-                completionHandler(.failure(error: error))
-                break
-            }
-        }
-    }
-    
-    //this method gets BOTH the dealership and the vehicle data -- it first attempts to get it from disk storage, then, if unsuccessful, tries to get it from the server
+    //This method attempts to retrieve API data from persistence. If unsuccessful, it makes a request to the server
     static func getAllAPIData(completionHandler: @escaping (NetworkResponse<[DealershipInfo]>) -> ()) {
         getPersistedData { (response) in
             switch response {
@@ -52,7 +38,7 @@ struct DataProvider {
         }
     }
     
-    static func getPersistedData(completionHandler: @escaping (NetworkResponse<[DealershipInfo]>) -> ()) {
+    static private func getPersistedData(completionHandler: @escaping (NetworkResponse<[DealershipInfo]>) -> ()) {
         DispatchQueue.global(qos: .userInitiated).async {
             let dealershipPDM = PersistedDataManager<DealershipInfo>(cacheKey: Constants.dealershipCacheKey)
             let dealerships = dealershipPDM.retrieveDataFromDisk()
@@ -61,8 +47,7 @@ struct DataProvider {
         }
     }
 
-    //This method will reach out to the server and attempt to get the API data
-    static func getDataFromServer(completionHandler: @escaping (NetworkResponse<[DealershipInfo]>) -> ()) {
+    static private func getDataFromServer(completionHandler: @escaping (NetworkResponse<[DealershipInfo]>) -> ()) {
         let networkingManager = NetworkingManager()
         let dealershipPDM = PersistedDataManager<DealershipInfo>(cacheKey: "persistedDealershipData")
 
